@@ -1,0 +1,38 @@
+Name,Cost,Weight,Damage,Versatile,Damage Type,Range,Properties
+Club,1sp,2,1d4,-,b,-,light
+Dagger,2gp,1,1d4,-,p,20/60,finesse*light*thrown
+Greatclub,2sp,10,1d8,-,b,-,two-handed
+Handaxe,5gp,2,1d6,-,s,20/60,light*thrown
+Javelin,5sp,2,1d6,-,p,30/120,thrown
+Light hammer,2gp,2,1d4,-,b,20/60,light*thrown
+Mace,5gp,4,1d6,-,b,-,-
+Quarterstaff,2sp,4,1d6,1d8,b,-,versatile
+Sickle,1gp,2,1d4,-,s,-,light
+Spear,1gp,3,1d6,1d8,p,20/60,thrown*versatile
+"Crossbow, light",25gp,5,1d8,-,p,80/320,ammunition*loading*two-handed
+Dart,5cp,0.25,1d4,-,p,20/60,finesse*thrown
+Shortbow,25gp,2,1d6,-,p,80/320,ammunition*two-handed
+Sling,1sp,0,1d4,-,b,30/120,ammunition
+Battleaxe,10gp,4,1d8,1d10,s,-,versatile
+Flail,10gp,2,1d8,-,b,-,-
+Glaive,20gp,6,1d10,-,s,-,heavy*reach*two-handed
+Greataxe,30gp,7,1d12,-,s,-,heavy*two-handed
+Greatsword,50gp,6,2d6,-,s,-,heavy*two-handed
+Halberd,20gp,6,1d10,-,s,-,heavy*reach*two-handed
+Lance,10gp,6,1d12,-,p,-,reach*special
+Longsword,15gp,3,1d8,1d10,s,-,versatile
+Maul,10gp,10,2d6,-,b,-,heavy*two-handed
+Morningstar,15gp,4,1d8,-,p,-,-
+Pike,5gp,18,1d10,-,p,-,heavy*reach*two-handed
+Rapier,25gp,2,1d8,-,p,-,finesse
+Scimitar,25gp,3,1d6,-,s,-,"finess*light"
+Shortsword,10gp,2,1d6,-,p,-,"finesse*light"
+Trident,5gp,4,1d6,1d8,p,20/60,"thrown*versatile"
+War pick,5gp,2,1d8,-,p,-,-
+Warhammer,15gp,2,1d8,1d10,b,-,versatile
+Whip,2gp,3,1d4,-,s,-,finesse*reach
+Blowgun,10gp,1,1,-,p,25/100,ammunition*loading
+"Crossbow, hand",75gp,3,1d6,-,p,30/120,ammunition*light*loading
+"Crossbow, heavy",50gp,18,1d10,-,p,100/400,ammunition*heavy*loading*two-handed
+Longbow,50gp,2,1d8,-,p,150/600,ammunition*heavy*two-handed
+Net,1gp,3,-,-,-,5/15,special*thrown

@@ -1,0 +1,6 @@
+{
+    "python.analysis.extraPaths": [
+        "src/commands",
+        "src/commands/service"
+    ]
+}
