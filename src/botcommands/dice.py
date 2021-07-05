@@ -1,7 +1,6 @@
 # commands relating to dice rolling, saved dice rolls
 
 from discord.ext import commands
-import service.database as database
 
 class CommandCog(commands.Cog):
     def __init__(self, bot):
@@ -12,6 +11,8 @@ class CommandCog(commands.Cog):
         if arg1 == None:
             await ctx.send(f"```Missing required argument. See help for more details.```", delete_after=15.0)
             return
+        # handler.player_roll(ctx.author.id, arg1)
+
 
     @commands.command()
     async def save(self, ctx):    

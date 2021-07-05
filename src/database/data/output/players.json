@@ -1,0 +1,31 @@
+{
+    "_default": {
+        "1": {
+            "first": "Nix",
+            "last": "Cantor",
+            "id": 239517576781234177,
+            "balance": 110739,
+            "rolls": {
+                "str": "-1",
+                "dex": "4",
+                "con": "1",
+                "wis": "2",
+                "int": "0",
+                "char": "5",
+                "prof": "3",
+                "stealth": "1d20 + dex + prof",
+                "playerid": "239517576781234177"
+            },
+            "inventory": {
+                "50": {
+                    "searchable": "abacus",
+                    "quantity": 3,
+                    "name": "Abacus",
+                    "cost": "2gp",
+                    "weight": "2"
+                }
+            },
+            "misc": {}
+        }
+    }
+}

@@ -1,8 +1,7 @@
 # commands relating to dice rolling, saved dice rolls
-
 import discord
 from discord.ext import commands
-import service.database as database
+import botcommands.handler
 
 class CommandCog(commands.Cog):
     def __init__(self, bot):

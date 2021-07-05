@@ -1,3 +1,6 @@
 {
-    "discord_token": "ODI2NDkwOTQyNDY2ODE4MDY4.YGNPrA.N3Zs4WMsQpzWaR7H31qegZOvffg"
+    "discord_token": "ODI2NDkwOTQyNDY2ODE4MDY4.YGNPrA.N3Zs4WMsQpzWaR7H31qegZOvffg",
+    "plugins": [
+        "5e_proficiency"
+    ]
 }

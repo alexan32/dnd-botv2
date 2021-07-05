@@ -57,7 +57,6 @@ class Parser:
             current = parseString[index]
             _next = self.peek(parseString, index)
             token += current
-            # print(f"index: {index} current: {current} next: {_next} token: {token}")
 
             if current.isalpha():
                 if current == 'd' and not _next.isalpha():
@@ -151,39 +150,38 @@ class Parser:
                                                                         #            c
             # MULTIPLICATION
             elif currentToken in ['*', '/']:
-                # go to first child of */
+                # go to first child of + -
                 child = tree[self.traverse(tree, currentNode.id, ['+', '-'])]
                 parent = tree[child.parent]
-                # populate empty root
+                # populate root if empty
                 if parent.token == None:
                     parent.token = currentToken
                     currentNodeId = parent.id
-                # insert node
+                # insert node if stopped by + or -
                 elif parent.token in ['+', '-'] or parent.parent != None:
                     newNode = Node(self.getId(), currentToken)
                     newNode.setLc(child)
                     parent.setRc(newNode)
                     tree[newNode.id] = newNode
                     currentNodeId = newNode.id
-                # parent is root, create new root
+                # reached the root without finding + or -, create new root
                 else:
                     newNode = Node(self.getId(), currentToken)
                     newNode.setLc(parent)
                     tree[newNode.id] = newNode
-                    currentNodeId = newNode.id
-                                        
+                    currentNodeId = newNode.id             
 
             # ADDITION
             elif currentToken in ['+', '-']:
                 # go to root
                 child = tree[self.traverse(tree, currentNode.id)]
                 root = tree[child.parent]
-                # populate empty root
+                # populate root if empty
                 if root.token == None:
                     root.token = currentToken
                     tree[root.id] = root
                     currentNodeId = root.id
-                # make new root
+                # make new root if populated
                 else:
                     newRoot = Node(self.getId(), currentToken)
                     newRoot.setLc(root)
@@ -207,8 +205,8 @@ class Parser:
                         break
                     else:
                         arg += currentToken
-                
-                token = self.functions[func](args)
+                print(f"ARGS: {args}")
+                token = self.functions[func](*args)
                 tokens.insert(0, token)
                 if __name__ == '__main__':
                     print(f"function: {func}, args: {args}")
@@ -241,17 +239,15 @@ class Parser:
 
             # parent is root
             if parent.parent == None:
-                # print(f"traverse stopped at {currentNode.id}")
                 return currentNode.id
             
             # parent has target value
             elif parent.token in targetValues:
-                # print(f"traverse stopped at {currentNode.id}")
                 return currentNode.id
 
             elif count > 100:
                 print("parse tree is too large")
-                raise Exception("traverse() function took to long. Parse tree is either too large or malformed.")
+                raise Exception("traverse function took to long. Parse tree is either too large or malformed.")
 
             else:
                 count += 1
@@ -314,6 +310,7 @@ class Parser:
 
         return total
 
+
     def buildString(self, tree, total):
         visited = []
         currentNode = None
@@ -353,11 +350,6 @@ class Parser:
         return diceString
 
 
-    def getId(self):
-        self.counter += 1
-        return str(self.counter)
-
-
     def makeGraphViz(self, tree):
         nodes = []
         paths = []
@@ -382,6 +374,11 @@ class Parser:
             f.write(diagram)
 
 
+    def getId(self):
+        self.counter += 1
+        return str(self.counter)
+
+
     def printTree(self, tree):
         for key in tree.keys():
             print(tree[key].toString())
@@ -392,6 +389,7 @@ class Parser:
             return parseString[index + 1]
         except:
             return ''
+
 
     def roll(self, n, s):
         rolls = []

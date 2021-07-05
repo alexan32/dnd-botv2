@@ -1,7 +1,7 @@
 # commands related to inventory management
 
 from discord.ext import commands
-from .. import database
+import database.database as database
 
 class CommandCog(commands.Cog):
     def __init__(self, bot):
