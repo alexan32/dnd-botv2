@@ -1,16 +1,12 @@
-import json
 
-model = {
-        "first": 'first',
-        "last": 'last',
-        "id": 0,
-        "balance": 0,
-        "rolls": {},                # contains dice rolls
-        "inventory": {},            # contains simplified item data
-        "counters": {},             # contains counters. min, max, current
-        "misc": {}                  # free space for extensions
-    }
 
-stringModel = '{"first": "", "last": "", "id": 0, "balance": 0, "rolls": {}, "inventory": {}, "counters": {}, "misc": {}}'
-print(stringModel)
-print(json.loads(stringModel))
+tokens = ['d', '6', '+', 'd', '20']
+
+def find(list, token):
+    indices = []
+    for x in range(len(list)):
+        if list[x] == token:
+            indices.append(x)
+    return indices
+
+print(find(tokens, 'd'))

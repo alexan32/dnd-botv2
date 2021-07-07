@@ -2,6 +2,7 @@
 
 from discord.ext import commands
 import database.database as database
+import botcommands.handler as handler
 
 class CommandCog(commands.Cog):
     def __init__(self, bot):
@@ -9,20 +10,22 @@ class CommandCog(commands.Cog):
 
     @commands.command()
     async def inventory(self, ctx):
-        player = database.get_player_by_id(int(ctx.author.id))
-        print(player)
+        response = handler.handler(ctx, 'inventory')
+        await ctx.send(f"```{response}```", delete_after=60.0)
+        await ctx.message.delete()
+
+    @commands.command()
+    async def give(self, ctx, recipientName, quantity, itemName):
+        response = handler.handler(ctx, 'give', recipient=recipientName.lower(), item=itemName, count=int(quantity))
+        await ctx.send(f"```{response}```", delete_after=15.0)
+        await ctx.message.delete()
 
 
     @commands.command()
-    async def give(self, ctx):    
-        await ctx.send(f"```Missing required argument. See help for more details.```", delete_after=15.0)
-        return
-
-
-    @commands.command()
-    async def drop(self, ctx):
-        await ctx.send(f"```Missing required argument. See help for more details.```", delete_after=15.0)
-        return
+    async def give(self, ctx, quantity, itemName):
+        response = handler.handler(ctx, 'drop', item=itemName, count=int(quantity))
+        await ctx.send(f"```{response}```", delete_after=15.0)
+        await ctx.message.delete()
 
 def setup(bot):
     bot.add_cog(CommandCog(bot))

@@ -91,8 +91,22 @@ class Parser:
             index += 1
         return tokens
 
-    
+
     def cleanTokens(self, tokens):
+
+        if tokens[0] == '-' and tokens[1].isnumeric():
+            tokens[1] = '-' + tokens[1]
+            del tokens[0]
+
+        if tokens[0] == 'd':
+            tokens.insert(0, '1')
+        
+        index = 0
+        while index < len(tokens):
+            if tokens[index] == 'd' and not tokens[index -1].isnumeric():
+                tokens.insert(index, '1')
+            index += 1
+
         index = 0
         while index < len(tokens) - 2:
             current = tokens[index]
@@ -105,8 +119,11 @@ class Parser:
                     num *= -1
                     tokens[index + 2] = str(num)
                     del tokens[index + 1]
-            
+
             index += 1
+
+        if __name__ == '__main__':
+            print(f"cleaned tokens: {tokens}")
         return tokens
 
 
@@ -122,6 +139,13 @@ class Parser:
         while True:
             currentToken = tokens.pop(0)
             currentNode = tree[currentNodeId]
+
+            if __name__ == '__main__' and self.iterate:
+                print("---------------------------------------------------------------------------------------")
+                print(f"tokens: {tokens}")
+                print(f"current Node: {currentNodeId}")
+                self.printTree(tree)
+                x = input()
 
             # NUMERIC: create child and populate with token
             if currentToken.isnumeric() or currentToken[1:].isnumeric():
@@ -217,13 +241,6 @@ class Parser:
 
             if len(tokens) == 0:
                 break
-            
-            if __name__ == '__main__' and self.iterate:
-                print("---------------------------------------------------------------------------------------")
-                print(f"tokens: {tokens}")
-                print(f"current Node: {currentNodeId}")
-                self.printTree(tree)
-                x = input()
 
         if __name__ == '__main__':
             self.printTree(tree)
@@ -374,6 +391,14 @@ class Parser:
             f.write(diagram)
 
 
+    def find(self, list, token):
+        indices = []
+        for x in range(len(list)):
+            if list[x] == token:
+                indices.append(x)
+        return indices
+
+
     def getId(self):
         self.counter += 1
         return str(self.counter)
@@ -412,4 +437,4 @@ if __name__ == '__main__':
                 "stealth": "1d20 + dex + prof",
                 "unarmed": "1d20 + prof + min(str, dex)"
             }
-    print(parser.parse("1d20 + prof + min(str, dex)", nameSpace)[1])
+    print(parser.parse("d10 * d20", nameSpace)[1])

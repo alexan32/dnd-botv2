@@ -1,12 +1,15 @@
-import database.database as database
+import database.database as db
 import diceParser.diceParserV2 as parser
 import importlib.util
 import json
 import os
 
+script_dir = os.path.dirname(__file__)
+with open(os.path.join(script_dir, "../../config.json")) as f:
+    config = json.load(f)
 
 dice = parser.Parser()
-databaseObject = database.Database()
+database = db.Database()
 
 print("\ninitializing back end extensions...\n")
 script_dir = os.path.dirname(__file__)
@@ -17,7 +20,7 @@ with open(os.path.join(script_dir, '../../config.json')) as f:
         mod = importlib.util.module_from_spec(spec)
         spec.loader.exec_module(mod)
         try:
-            mod.init_plugin(dice, databaseObject)
+            mod.init_plugin(dice, database)
         except AttributeError:
             print(f"* plugin '{plugin}' had no init_plugin function and will be skipped")
         else:
@@ -25,16 +28,39 @@ with open(os.path.join(script_dir, '../../config.json')) as f:
     print('done')
 
 
+def name_sort(e):
+    return e['name']
+
 # HANDLER ------------------------------------------------------------------------
 
-async def handler(ctx, command, *args):
+def handler(ctx, command, *args, **kwargs):
+
     userId = database.get_assumed_id(ctx.author.id)
-    print(f"command: {command}\nid: {userId}\nargs: {args}")
+    print(f"\ncommand: {command} {args} {kwargs}\nid: {userId}\n")
 
-    if command == 'player_roll':
-        response = player_roll(userId, args[0])
-        await ctx.send(f"```{response}```", delete_after=15.0)
+    if command == 'roll':
+        return player_roll(userId, args[0])
 
+    elif command == 'save':
+        return player_save_roll(userId, args[0], args[1])
+
+    elif command == 'erase':
+        return player_delete_roll(userId, args[0])
+
+    elif command == 'list':
+        return player_list_rolls(userId)
+
+    elif command == 'inventory':
+        return player_list_inventory(userId)
+
+    elif command == 'give':
+        print(kwargs)
+        if database.is_admin(userId):
+            print('sender is admin')
+            return admin_give_item(kwargs['recipient'], kwargs['item'], kwargs['count'])
+        else:
+            print('sender is player')
+            return player_give_item(userId, kwargs['recipient'], kwargs['item'], kwargs['count'])
 
 # CHARACTER -----------------------------------------------------------------------
 
@@ -75,8 +101,11 @@ def player_save_roll(playerId, key, diceString):
 def player_delete_roll(playerId, key):
     key = key.strip().lower()
     player = database.get_player_by_id(playerId)
-    del player['rolls'][key]
-    database.update_player(playerId, changedValues={'rolls': player['rolls']})
+    try:
+        del player['rolls'][key]
+        database.update_player(playerId, changedValues={'rolls': player['rolls']})
+    except KeyError as e:
+        return f"Delete failed. No saved roll called {e}"
     return f"deleted '{key}' successfully"
 
 
@@ -86,9 +115,9 @@ def player_list_rolls(playerId):
     keys = [*nameSpace]
     keys.sort()
 
-    response = f"{player['first']}'s dice\n" + ''.ljust(60, '=') + '\n'
+    response = f"{player['first']}'s dice\n" + ''.ljust(40, '=') + '\n'
     for key in keys:
-        response += f"{key}:".ljust(30, '.') + nameSpace[key] + "\n"
+        response += f"{key}:".ljust(25, ' ') + nameSpace[key] + "\n"
     return response
 
 
@@ -108,7 +137,7 @@ def admin_give_item(recipientName, itemName, quantity):
     if recipient == None:
         return f"No character named '{recipientName}'"
     # get itemId
-    results = database.search_items()
+    results = database.search_items(itemName)
     if len(results) > 1:
         response = f"no matches for '{itemName}'. Did you mean one of these?"
         for result in results:
@@ -117,7 +146,8 @@ def admin_give_item(recipientName, itemName, quantity):
     elif len(results) == 0:
         return f"No items matched '{itemName}'"
     else:
-        database.update_player_inventory(recipient['id'], results[0].id, quantity)
+        newQuantity, numberRemoved = database.update_player_inventory(recipient['id'], results[0].id, quantity)
+        return f"{recipientName} recieved {quantity} {itemName}('s)"
 
 
 def player_drop_item(playerId, itemName, quantity):
@@ -177,13 +207,10 @@ def build_inventory_string(itemList, fill=' ', includeTotal=False):
     return response
 
 
-def name_sort(e):
-    return e['name']
+# SETUP ---------------------------------------------------------------------------
 
+def setup():
+    for admin in config['root_admins']:
+        database.set_admin(admin)
 
-if __name__ == '__main__':
-    pass
-    # print(player_save_roll(239517576781234177, 'unarmed strike', '1d20 + prof + max(str, dex)'))
-    # print(player_roll(239517576781234177, 'dagger'))
-    # print(player_delete_roll(239517576781234177, 'unarmed'))
-    # print(player_list_inventory(239517576781234177))
+    return "root_admins have been added from config"
