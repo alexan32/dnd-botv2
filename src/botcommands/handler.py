@@ -1,5 +1,7 @@
+from discord.ext.commands.errors import CommandError, CommandInvokeError
 import database.database as db
-import diceParser.diceParserV2 as parser
+import dice.dice_processor as dp
+import discord.ext.commands as commands
 import importlib.util
 import json
 import os
@@ -8,7 +10,7 @@ script_dir = os.path.dirname(__file__)
 with open(os.path.join(script_dir, "../../config.json")) as f:
     config = json.load(f)
 
-dice = parser.Parser()
+dice = dp.DiceProcessor()
 database = db.Database()
 
 print("\ninitializing back end extensions...\n")
@@ -62,6 +64,12 @@ def handler(ctx, command, *args, **kwargs):
             print('sender is player')
             return player_give_item(userId, kwargs['recipient'], kwargs['item'], kwargs['count'])
 
+    elif command == 'register':
+        return register(userId, args[0], args[1])
+
+    elif command == 'unregister':
+        return unregister(userId)
+
 # CHARACTER -----------------------------------------------------------------------
 
 def register(playerId, first, last):
@@ -80,12 +88,8 @@ def player_roll(playerId, diceString):
     diceString = diceString.strip().lower()
     player = database.get_player_by_id(playerId)
     nameSpace = player['rolls']
-    if diceString in nameSpace.keys():
-        result = dice.parse(nameSpace[diceString], nameSpace)
-        response = f"{player['first']} rolled '{diceString}': {result[1]}"
-    else:
-        result = dice.parse(diceString, nameSpace)
-        response = f"{player['first']} rolled {result[1]}"
+    result = dice.processString(diceString, nameSpace)
+    response = f"{player['first']} rolled {result}"
     return response
 
 

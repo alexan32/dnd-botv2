@@ -171,12 +171,17 @@ class Database:
                 item['quantity'] += quantity
                 newQuantity = item['quantity']
             self.update_player(playerId, {'inventory': inventory})
-            
+
         print(f"new Quantity: {newQuantity}, numberRemoved: {numberRemoved}")
         return newQuantity, numberRemoved
             
 
     def create_player(self, id, first, last):
+
+        existing = self.get_player_by_id(id)
+        if existing != None:
+            self.delete_player(id)
+
         player = model_player.copy()
         player['first'] = first
         player['last'] = last

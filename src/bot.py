@@ -3,6 +3,7 @@ import json
 import os
 from botcommands.utils import deleteAfter
 from discord.ext import commands
+from dice.dice_processor import DiceProcessorError
 
 script_dir = os.path.dirname(__file__)
 
@@ -15,6 +16,7 @@ bot.load_extension("botcommands.admin")
 bot.load_extension("botcommands.dice")
 bot.load_extension("botcommands.inventory")
 bot.load_extension("botcommands.tracker")
+bot.load_extension("botcommands.character")
 
 
 print("\ninitializing discord bot extensions...\n")
@@ -38,7 +40,7 @@ async def on_ready():
 
 @bot.event
 async def on_command_error(ctx, error):
-    if isinstance(error, commands.CommandNotFound):
+    if isinstance(error, commands.CommandNotFound) or isinstance(error, DiceProcessorError):
         print(error)
         await ctx.send(f"""```{error}```""", delete_after=20.0)
         await deleteAfter(ctx, 20.0)
@@ -46,10 +48,10 @@ async def on_command_error(ctx, error):
         print(error)
         await ctx.send(f"""```{error}. type !help for more details```""", delete_after=20.0)
         await deleteAfter(ctx, 20.0)
-    # else:
-    #     print(error)
-    #     await ctx.send(f"```An unhandled exception occurred.```", delete_after=20.0)
-    #     await deleteAfter(ctx, 20.0)
+    else:
+        print(error)
+        await ctx.send(f"```An unhandled exception occurred```", delete_after=20.0)
+        await deleteAfter(ctx, 20.0)
 
 
 # execution -----------------------------------------------------------------------------
