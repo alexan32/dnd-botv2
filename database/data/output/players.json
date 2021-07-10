@@ -1,19 +1,22 @@
 {
     "_default": {
-        "2": {
+        "1": {
             "first": "nix",
             "last": "cantor",
             "id": 239517576781234177,
             "balance": 0,
             "rolls": {
-                "dex": "4",
-                "wis": "2",
-                "char": "5",
-                "sleight of hand": "1d20 + dex + 2"
+                "prof": "1",
+                "pid": "239517576781234177"
             },
             "inventory": {},
             "counters": {},
-            "misc": {}
+            "misc": {
+                "5e_proficiency": {
+                    "proficiency": [],
+                    "expertise": []
+                }
+            }
         }
     }
 }

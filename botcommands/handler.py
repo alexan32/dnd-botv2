@@ -1,33 +1,31 @@
-from discord.ext.commands.errors import CommandError, CommandInvokeError
 import database.database as db
 import dice.dice_processor as dp
-import discord.ext.commands as commands
 import importlib.util
 import json
 import os
 
 script_dir = os.path.dirname(__file__)
-with open(os.path.join(script_dir, "../../config.json")) as f:
+with open(os.path.join(script_dir, "../config.json")) as f:
     config = json.load(f)
 
 dice = dp.DiceProcessor()
 database = db.Database()
 
-print("\ninitializing back end extensions...\n")
-script_dir = os.path.dirname(__file__)
-with open(os.path.join(script_dir, '../../config.json')) as f:
-    config = json.load(f)
-    for plugin in config['plugins']:
-        spec = importlib.util.spec_from_file_location(plugin, os.path.join(script_dir, f"../../plugins/{plugin}.py"))
-        mod = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(mod)
-        try:
-            mod.init_plugin(dice, database)
-        except AttributeError:
-            print(f"* plugin '{plugin}' had no init_plugin function and will be skipped")
-        else:
-            print(f"* loaded '{plugin}'")
-    print('done')
+# print("\ninitializing back end extensions...\n")
+# script_dir = os.path.dirname(__file__)
+# with open(os.path.join(script_dir, '../config.json')) as f:
+#     config = json.load(f)
+#     for plugin in config['plugins']:
+#         spec = importlib.util.spec_from_file_location(plugin, os.path.join(script_dir, f"../plugins/{plugin}.py"))
+#         mod = importlib.util.module_from_spec(spec)
+#         spec.loader.exec_module(mod)
+#         try:
+#             mod.init_plugin(dice, database)
+#         except AttributeError:
+#             print(f"* plugin '{plugin}' had no init_plugin function and will be skipped")
+#         else:
+#             print(f"* loaded '{plugin}'")
+#     print('done')
 
 
 def name_sort(e):
@@ -89,7 +87,7 @@ def player_roll(playerId, diceString):
     player = database.get_player_by_id(playerId)
     nameSpace = player['rolls']
     result = dice.processString(diceString, nameSpace)
-    response = f"{player['first']} rolled {result}"
+    response = f"{player['first']} rolled {result}" if diceString not in nameSpace.keys() else f"{player['first']} rolled {diceString}: {result}"
     return response
 
 

@@ -58,7 +58,7 @@ class CommandCog(commands.Cog):
         await ctx.message.delete()
 
 
-    @commands.command()
+    @commands.command(aliases=['rolls'])
     async def list(self, ctx, *args):
         response = handler.handler(ctx, 'list')
         await ctx.send(f"```{response}```", delete_after=60.0)

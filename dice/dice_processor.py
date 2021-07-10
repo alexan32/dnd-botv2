@@ -30,6 +30,7 @@ class DiceProcessor:
 
 
     def processString(self, diceString, nameSpace={}):
+        print(self.functions)
         diceString = nameSpace[diceString] if diceString in nameSpace.keys() else diceString
         tokens = self.tokenize(diceString)
         if len(nameSpace.keys()) > 0:
@@ -92,8 +93,9 @@ class DiceProcessor:
         while index < len(tokens):
             token = tokens[index]
             if token in nameSpace.keys():
-                newTokens = self.tokenize(nameSpace[token])
-                tokens = tokens[:index] + newTokens + tokens[index+1:]
+                if not (token in self.functions.keys() and self.peek(tokens, index) == '('):
+                    newTokens = self.tokenize(nameSpace[token])
+                    tokens = tokens[:index] + newTokens + tokens[index+1:]
             index += 1
         return tokens
 
@@ -102,7 +104,8 @@ class DiceProcessor:
         index = 0
         while index < len(tokens):
             token = tokens[index]
-            if token in self.functions.keys():
+            if token in self.functions.keys() and self.peek(tokens, index) == '(':
+                print(f"Function! {token}")
                 func = token
                 args = []
                 arg = ''
@@ -122,6 +125,7 @@ class DiceProcessor:
                     else:
                         arg += token
                     index2 += 1
+                print(f"FUNCTION: {func} ARGS: {args}")
                 output = self.functions[func](*args)
                 print(f"FUNCTION: {func} OUTPUT: {output}")
                 replace_segment(tokens, index, index2, output)

@@ -183,6 +183,188 @@
             }
         },
         "14": {
+            "name": "Padded",
+            "id": 0,
+            "searchable": "padded",
+            "cost": "5gp",
+            "weight": "8",
+            "type": "armor",
+            "properties": {
+                "type": "light",
+                "ac": "11 + dex",
+                "stealthDisadvantage": true,
+                "strengthRequirement": 0
+            }
+        },
+        "15": {
+            "name": "Leather",
+            "id": 1,
+            "searchable": "leather",
+            "cost": "10gp",
+            "weight": "10",
+            "type": "armor",
+            "properties": {
+                "type": "light",
+                "ac": "11 + dex",
+                "stealthDisadvantage": false,
+                "strengthRequirement": 0
+            }
+        },
+        "16": {
+            "name": "Studded leather",
+            "id": 2,
+            "searchable": "studdedleather",
+            "cost": "45gp",
+            "weight": "13",
+            "type": "armor",
+            "properties": {
+                "type": "light",
+                "ac": "12 + dex",
+                "stealthDisadvantage": false,
+                "strengthRequirement": 0
+            }
+        },
+        "17": {
+            "name": "Hide",
+            "id": 3,
+            "searchable": "hide",
+            "cost": "10gp",
+            "weight": "12",
+            "type": "armor",
+            "properties": {
+                "type": "medium",
+                "ac": "12 + min(dex, 2)",
+                "stealthDisadvantage": false,
+                "strengthRequirement": 0
+            }
+        },
+        "18": {
+            "name": "Chain shirt",
+            "id": 4,
+            "searchable": "chainshirt",
+            "cost": "50gp",
+            "weight": "20",
+            "type": "armor",
+            "properties": {
+                "type": "medium",
+                "ac": "13 + min(dex, 2)",
+                "stealthDisadvantage": false,
+                "strengthRequirement": 0
+            }
+        },
+        "19": {
+            "name": "Scale mail",
+            "id": 5,
+            "searchable": "scalemail",
+            "cost": "50gp",
+            "weight": "45",
+            "type": "armor",
+            "properties": {
+                "type": "medium",
+                "ac": "14 + min(dex, 2)",
+                "stealthDisadvantage": true,
+                "strengthRequirement": 0
+            }
+        },
+        "20": {
+            "name": "Breastplate",
+            "id": 6,
+            "searchable": "breastplate",
+            "cost": "400gp",
+            "weight": "20",
+            "type": "armor",
+            "properties": {
+                "type": "medium",
+                "ac": "14 + min(dex, 2)",
+                "stealthDisadvantage": false,
+                "strengthRequirement": 0
+            }
+        },
+        "21": {
+            "name": "Half plate",
+            "id": 7,
+            "searchable": "halfplate",
+            "cost": "750gp",
+            "weight": "40",
+            "type": "armor",
+            "properties": {
+                "type": "medium",
+                "ac": "15 + min(dex, 2)",
+                "stealthDisadvantage": true,
+                "strengthRequirement": 0
+            }
+        },
+        "22": {
+            "name": "Ring mail",
+            "id": 8,
+            "searchable": "ringmail",
+            "cost": "30gp",
+            "weight": "40",
+            "type": "armor",
+            "properties": {
+                "type": "heavy",
+                "ac": "14",
+                "stealthDisadvantage": true,
+                "strengthRequirement": 0
+            }
+        },
+        "23": {
+            "name": "Chain mail",
+            "id": 9,
+            "searchable": "chainmail",
+            "cost": "75gp",
+            "weight": "55",
+            "type": "armor",
+            "properties": {
+                "type": "heavy",
+                "ac": "16",
+                "stealthDisadvantage": true,
+                "strengthRequirement": 13
+            }
+        },
+        "24": {
+            "name": "Splint",
+            "id": 10,
+            "searchable": "splint",
+            "cost": "200gp",
+            "weight": "60",
+            "type": "armor",
+            "properties": {
+                "type": "heavy",
+                "ac": "17",
+                "stealthDisadvantage": true,
+                "strengthRequirement": 15
+            }
+        },
+        "25": {
+            "name": "Plate",
+            "id": 11,
+            "searchable": "plate",
+            "cost": "1500gp",
+            "weight": "65",
+            "type": "armor",
+            "properties": {
+                "type": "heavy",
+                "ac": "18",
+                "stealthDisadvantage": true,
+                "strengthRequirement": 15
+            }
+        },
+        "26": {
+            "name": "Shield",
+            "id": 12,
+            "searchable": "shield",
+            "cost": "10gp",
+            "weight": "6",
+            "type": "armor",
+            "properties": {
+                "type": "shield",
+                "ac": "ac + 2",
+                "stealthDisadvantage": false,
+                "strengthRequirement": 0
+            }
+        },
+        "27": {
             "name": "Club",
             "id": 13,
             "searchable": "club",
@@ -199,7 +381,7 @@
                 ]
             }
         },
-        "15": {
+        "28": {
             "name": "Dagger",
             "id": 14,
             "searchable": "dagger",
@@ -218,7 +400,7 @@
                 ]
             }
         },
-        "16": {
+        "29": {
             "name": "Greatclub",
             "id": 15,
             "searchable": "greatclub",
@@ -235,7 +417,7 @@
                 ]
             }
         },
-        "17": {
+        "30": {
             "name": "Handaxe",
             "id": 16,
             "searchable": "handaxe",
@@ -253,7 +435,7 @@
                 ]
             }
         },
-        "18": {
+        "31": {
             "name": "Javelin",
             "id": 17,
             "searchable": "javelin",
@@ -270,7 +452,7 @@
                 ]
             }
         },
-        "19": {
+        "32": {
             "name": "Light hammer",
             "id": 18,
             "searchable": "lighthammer",
@@ -288,7 +470,7 @@
                 ]
             }
         },
-        "20": {
+        "33": {
             "name": "Mace",
             "id": 19,
             "searchable": "mace",
@@ -305,7 +487,7 @@
                 ]
             }
         },
-        "21": {
+        "34": {
             "name": "Quarterstaff",
             "id": 20,
             "searchable": "quarterstaff",
@@ -322,7 +504,7 @@
                 ]
             }
         },
-        "22": {
+        "35": {
             "name": "Sickle",
             "id": 21,
             "searchable": "sickle",
@@ -339,7 +521,7 @@
                 ]
             }
         },
-        "23": {
+        "36": {
             "name": "Spear",
             "id": 22,
             "searchable": "spear",
@@ -357,7 +539,7 @@
                 ]
             }
         },
-        "24": {
+        "37": {
             "name": "Crossbow, light",
             "id": 23,
             "searchable": "crossbow,light",
@@ -376,7 +558,7 @@
                 ]
             }
         },
-        "25": {
+        "38": {
             "name": "Dart",
             "id": 24,
             "searchable": "dart",
@@ -394,7 +576,7 @@
                 ]
             }
         },
-        "26": {
+        "39": {
             "name": "Shortbow",
             "id": 25,
             "searchable": "shortbow",
@@ -412,7 +594,7 @@
                 ]
             }
         },
-        "27": {
+        "40": {
             "name": "Sling",
             "id": 26,
             "searchable": "sling",
@@ -429,7 +611,7 @@
                 ]
             }
         },
-        "28": {
+        "41": {
             "name": "Battleaxe",
             "id": 27,
             "searchable": "battleaxe",
@@ -446,7 +628,7 @@
                 ]
             }
         },
-        "29": {
+        "42": {
             "name": "Flail",
             "id": 28,
             "searchable": "flail",
@@ -463,7 +645,7 @@
                 ]
             }
         },
-        "30": {
+        "43": {
             "name": "Glaive",
             "id": 29,
             "searchable": "glaive",
@@ -482,7 +664,7 @@
                 ]
             }
         },
-        "31": {
+        "44": {
             "name": "Greataxe",
             "id": 30,
             "searchable": "greataxe",
@@ -500,7 +682,7 @@
                 ]
             }
         },
-        "32": {
+        "45": {
             "name": "Greatsword",
             "id": 31,
             "searchable": "greatsword",
@@ -518,7 +700,7 @@
                 ]
             }
         },
-        "33": {
+        "46": {
             "name": "Halberd",
             "id": 32,
             "searchable": "halberd",
@@ -537,7 +719,7 @@
                 ]
             }
         },
-        "34": {
+        "47": {
             "name": "Lance",
             "id": 33,
             "searchable": "lance",
@@ -555,7 +737,7 @@
                 ]
             }
         },
-        "35": {
+        "48": {
             "name": "Longsword",
             "id": 34,
             "searchable": "longsword",
@@ -572,7 +754,7 @@
                 ]
             }
         },
-        "36": {
+        "49": {
             "name": "Maul",
             "id": 35,
             "searchable": "maul",
@@ -590,7 +772,7 @@
                 ]
             }
         },
-        "37": {
+        "50": {
             "name": "Morningstar",
             "id": 36,
             "searchable": "morningstar",
@@ -607,7 +789,7 @@
                 ]
             }
         },
-        "38": {
+        "51": {
             "name": "Pike",
             "id": 37,
             "searchable": "pike",
@@ -626,7 +808,7 @@
                 ]
             }
         },
-        "39": {
+        "52": {
             "name": "Rapier",
             "id": 38,
             "searchable": "rapier",
@@ -643,7 +825,7 @@
                 ]
             }
         },
-        "40": {
+        "53": {
             "name": "Scimitar",
             "id": 39,
             "searchable": "scimitar",
@@ -656,11 +838,12 @@
                 "damageType": "slashing",
                 "range": "-",
                 "properties": [
-                    "finess,light"
+                    "finess",
+                    "light"
                 ]
             }
         },
-        "41": {
+        "54": {
             "name": "Shortsword",
             "id": 40,
             "searchable": "shortsword",
@@ -673,11 +856,12 @@
                 "damageType": "piercing",
                 "range": "-",
                 "properties": [
-                    "finesse,light"
+                    "finesse",
+                    "light"
                 ]
             }
         },
-        "42": {
+        "55": {
             "name": "Trident",
             "id": 41,
             "searchable": "trident",
@@ -690,11 +874,12 @@
                 "damageType": "piercing",
                 "range": "20/60",
                 "properties": [
-                    "thrown,versatile"
+                    "thrown",
+                    "versatile"
                 ]
             }
         },
-        "43": {
+        "56": {
             "name": "War pick",
             "id": 42,
             "searchable": "warpick",
@@ -711,7 +896,7 @@
                 ]
             }
         },
-        "44": {
+        "57": {
             "name": "Warhammer",
             "id": 43,
             "searchable": "warhammer",
@@ -728,7 +913,7 @@
                 ]
             }
         },
-        "45": {
+        "58": {
             "name": "Whip",
             "id": 44,
             "searchable": "whip",
@@ -746,7 +931,7 @@
                 ]
             }
         },
-        "46": {
+        "59": {
             "name": "Blowgun",
             "id": 45,
             "searchable": "blowgun",
@@ -764,7 +949,7 @@
                 ]
             }
         },
-        "47": {
+        "60": {
             "name": "Crossbow, hand",
             "id": 46,
             "searchable": "crossbow,hand",
@@ -783,7 +968,7 @@
                 ]
             }
         },
-        "48": {
+        "61": {
             "name": "Crossbow, heavy",
             "id": 47,
             "searchable": "crossbow,heavy",
@@ -803,7 +988,7 @@
                 ]
             }
         },
-        "49": {
+        "62": {
             "name": "Longbow",
             "id": 48,
             "searchable": "longbow",
@@ -822,7 +1007,7 @@
                 ]
             }
         },
-        "50": {
+        "63": {
             "name": "Net",
             "id": 49,
             "searchable": "net",
@@ -840,7 +1025,7 @@
                 ]
             }
         },
-        "51": {
+        "64": {
             "name": "Abacus",
             "id": 50,
             "searchable": "abacus",
@@ -849,7 +1034,7 @@
             "type": "gear",
             "properties": {}
         },
-        "52": {
+        "65": {
             "name": "Acid (vial)",
             "id": 51,
             "searchable": "acid(vial)",
@@ -858,7 +1043,7 @@
             "type": "gear",
             "properties": {}
         },
-        "53": {
+        "66": {
             "name": "Alchemist's fire (flask)",
             "id": 52,
             "searchable": "alchemist'sfire(flask)",
@@ -867,7 +1052,7 @@
             "type": "gear",
             "properties": {}
         },
-        "54": {
+        "67": {
             "name": "Arrows (20)",
             "id": 53,
             "searchable": "arrows(20)",
@@ -876,7 +1061,7 @@
             "type": "gear",
             "properties": {}
         },
-        "55": {
+        "68": {
             "name": "Blowgun needles (20)",
             "id": 54,
             "searchable": "blowgunneedles(20)",
@@ -885,7 +1070,7 @@
             "type": "gear",
             "properties": {}
         },
-        "56": {
+        "69": {
             "name": "Crossbow bolts (20)",
             "id": 55,
             "searchable": "crossbowbolts(20)",
@@ -894,7 +1079,7 @@
             "type": "gear",
             "properties": {}
         },
-        "57": {
+        "70": {
             "name": "Sling bullets (20)",
             "id": 56,
             "searchable": "slingbullets(20)",
@@ -903,7 +1088,7 @@
             "type": "gear",
             "properties": {}
         },
-        "58": {
+        "71": {
             "name": "Antitoxin",
             "id": 57,
             "searchable": "antitoxin",
@@ -912,7 +1097,7 @@
             "type": "gear",
             "properties": {}
         },
-        "59": {
+        "72": {
             "name": "Crystal",
             "id": 58,
             "searchable": "crystal",
@@ -921,7 +1106,7 @@
             "type": "gear",
             "properties": {}
         },
-        "60": {
+        "73": {
             "name": "Orb",
             "id": 59,
             "searchable": "orb",
@@ -930,7 +1115,7 @@
             "type": "gear",
             "properties": {}
         },
-        "61": {
+        "74": {
             "name": "Rod",
             "id": 60,
             "searchable": "rod",
@@ -939,7 +1124,7 @@
             "type": "gear",
             "properties": {}
         },
-        "62": {
+        "75": {
             "name": "Wand",
             "id": 61,
             "searchable": "wand",
@@ -948,7 +1133,7 @@
             "type": "gear",
             "properties": {}
         },
-        "63": {
+        "76": {
             "name": "Backpack",
             "id": 62,
             "searchable": "backpack",
@@ -957,7 +1142,7 @@
             "type": "gear",
             "properties": {}
         },
-        "64": {
+        "77": {
             "name": "Ball bearings (bag of 1,000)",
             "id": 63,
             "searchable": "ballbearings(bagof1,000)",
@@ -966,7 +1151,7 @@
             "type": "gear",
             "properties": {}
         },
-        "65": {
+        "78": {
             "name": "Barrel",
             "id": 64,
             "searchable": "barrel",
@@ -975,7 +1160,7 @@
             "type": "gear",
             "properties": {}
         },
-        "66": {
+        "79": {
             "name": "Basket",
             "id": 65,
             "searchable": "basket",
@@ -984,7 +1169,7 @@
             "type": "gear",
             "properties": {}
         },
-        "67": {
+        "80": {
             "name": "Bedroll",
             "id": 66,
             "searchable": "bedroll",
@@ -993,7 +1178,7 @@
             "type": "gear",
             "properties": {}
         },
-        "68": {
+        "81": {
             "name": "Bell",
             "id": 67,
             "searchable": "bell",
@@ -1002,7 +1187,7 @@
             "type": "gear",
             "properties": {}
         },
-        "69": {
+        "82": {
             "name": "Blanket",
             "id": 68,
             "searchable": "blanket",
@@ -1011,7 +1196,7 @@
             "type": "gear",
             "properties": {}
         },
-        "70": {
+        "83": {
             "name": "Block and tackle",
             "id": 69,
             "searchable": "blockandtackle",
@@ -1020,7 +1205,7 @@
             "type": "gear",
             "properties": {}
         },
-        "71": {
+        "84": {
             "name": "Book",
             "id": 70,
             "searchable": "book",
@@ -1029,7 +1214,7 @@
             "type": "gear",
             "properties": {}
         },
-        "72": {
+        "85": {
             "name": "Bottle, glass",
             "id": 71,
             "searchable": "bottle,glass",
@@ -1038,7 +1223,7 @@
             "type": "gear",
             "properties": {}
         },
-        "73": {
+        "86": {
             "name": "Bucket",
             "id": 72,
             "searchable": "bucket",
@@ -1047,7 +1232,7 @@
             "type": "gear",
             "properties": {}
         },
-        "74": {
+        "87": {
             "name": "Caltrops (bag of 20)",
             "id": 73,
             "searchable": "caltrops(bagof20)",
@@ -1056,7 +1241,7 @@
             "type": "gear",
             "properties": {}
         },
-        "75": {
+        "88": {
             "name": "Candle",
             "id": 74,
             "searchable": "candle",
@@ -1065,7 +1250,7 @@
             "type": "gear",
             "properties": {}
         },
-        "76": {
+        "89": {
             "name": "Case, crossbow bolt",
             "id": 75,
             "searchable": "case,crossbowbolt",
@@ -1074,7 +1259,7 @@
             "type": "gear",
             "properties": {}
         },
-        "77": {
+        "90": {
             "name": "Case, map or scroll",
             "id": 76,
             "searchable": "case,maporscroll",
@@ -1083,7 +1268,7 @@
             "type": "gear",
             "properties": {}
         },
-        "78": {
+        "91": {
             "name": "Chain (10ft)",
             "id": 77,
             "searchable": "chain(10ft)",
@@ -1092,7 +1277,7 @@
             "type": "gear",
             "properties": {}
         },
-        "79": {
+        "92": {
             "name": "Chalk (1 peice)",
             "id": 78,
             "searchable": "chalk(1peice)",
@@ -1101,7 +1286,7 @@
             "type": "gear",
             "properties": {}
         },
-        "80": {
+        "93": {
             "name": "Chest",
             "id": 79,
             "searchable": "chest",
@@ -1110,7 +1295,7 @@
             "type": "gear",
             "properties": {}
         },
-        "81": {
+        "94": {
             "name": "Climber's kit",
             "id": 80,
             "searchable": "climber'skit",
@@ -1119,7 +1304,7 @@
             "type": "gear",
             "properties": {}
         },
-        "82": {
+        "95": {
             "name": "Clothes, common",
             "id": 81,
             "searchable": "clothes,common",
@@ -1128,7 +1313,7 @@
             "type": "gear",
             "properties": {}
         },
-        "83": {
+        "96": {
             "name": "Clothes, costume",
             "id": 82,
             "searchable": "clothes,costume",
@@ -1137,7 +1322,7 @@
             "type": "gear",
             "properties": {}
         },
-        "84": {
+        "97": {
             "name": "Clothes, fine",
             "id": 83,
             "searchable": "clothes,fine",
@@ -1146,7 +1331,7 @@
             "type": "gear",
             "properties": {}
         },
-        "85": {
+        "98": {
             "name": "Clothes, traveler's",
             "id": 84,
             "searchable": "clothes,traveler's",
@@ -1155,7 +1340,7 @@
             "type": "gear",
             "properties": {}
         },
-        "86": {
+        "99": {
             "name": "Component pouch",
             "id": 85,
             "searchable": "componentpouch",
@@ -1164,7 +1349,7 @@
             "type": "gear",
             "properties": {}
         },
-        "87": {
+        "100": {
             "name": "Crowbar",
             "id": 86,
             "searchable": "crowbar",
@@ -1173,7 +1358,7 @@
             "type": "gear",
             "properties": {}
         },
-        "88": {
+        "101": {
             "name": "Sprig of mistletoe",
             "id": 87,
             "searchable": "sprigofmistletoe",
@@ -1182,7 +1367,7 @@
             "type": "gear",
             "properties": {}
         },
-        "89": {
+        "102": {
             "name": "Totem",
             "id": 88,
             "searchable": "totem",
@@ -1191,7 +1376,7 @@
             "type": "gear",
             "properties": {}
         },
-        "90": {
+        "103": {
             "name": "Wooden staff",
             "id": 89,
             "searchable": "woodenstaff",
@@ -1200,7 +1385,7 @@
             "type": "gear",
             "properties": {}
         },
-        "91": {
+        "104": {
             "name": "Yew wand",
             "id": 90,
             "searchable": "yewwand",
@@ -1209,7 +1394,7 @@
             "type": "gear",
             "properties": {}
         },
-        "92": {
+        "105": {
             "name": "Fishing tackle",
             "id": 91,
             "searchable": "fishingtackle",
@@ -1218,7 +1403,7 @@
             "type": "gear",
             "properties": {}
         },
-        "93": {
+        "106": {
             "name": "Flask or tankard",
             "id": 92,
             "searchable": "flaskortankard",
@@ -1227,7 +1412,7 @@
             "type": "gear",
             "properties": {}
         },
-        "94": {
+        "107": {
             "name": "Grappling hook",
             "id": 93,
             "searchable": "grapplinghook",
@@ -1236,7 +1421,7 @@
             "type": "gear",
             "properties": {}
         },
-        "95": {
+        "108": {
             "name": "Hammer",
             "id": 94,
             "searchable": "hammer",
@@ -1245,7 +1430,7 @@
             "type": "gear",
             "properties": {}
         },
-        "96": {
+        "109": {
             "name": "Hammer, sledge",
             "id": 95,
             "searchable": "hammer,sledge",
@@ -1254,7 +1439,7 @@
             "type": "gear",
             "properties": {}
         },
-        "97": {
+        "110": {
             "name": "Healers kit",
             "id": 96,
             "searchable": "healerskit",
@@ -1263,7 +1448,7 @@
             "type": "gear",
             "properties": {}
         },
-        "98": {
+        "111": {
             "name": "Amulet",
             "id": 97,
             "searchable": "amulet",
@@ -1272,7 +1457,7 @@
             "type": "gear",
             "properties": {}
         },
-        "99": {
+        "112": {
             "name": "Emblem",
             "id": 98,
             "searchable": "emblem",
@@ -1281,7 +1466,7 @@
             "type": "gear",
             "properties": {}
         },
-        "100": {
+        "113": {
             "name": "Reliquary",
             "id": 99,
             "searchable": "reliquary",
@@ -1290,7 +1475,7 @@
             "type": "gear",
             "properties": {}
         },
-        "101": {
+        "114": {
             "name": "Holy water (flask)",
             "id": 100,
             "searchable": "holywater(flask)",
@@ -1299,7 +1484,7 @@
             "type": "gear",
             "properties": {}
         },
-        "102": {
+        "115": {
             "name": "Hourglass",
             "id": 101,
             "searchable": "hourglass",
@@ -1308,7 +1493,7 @@
             "type": "gear",
             "properties": {}
         },
-        "103": {
+        "116": {
             "name": "Hunting trap",
             "id": 102,
             "searchable": "huntingtrap",
@@ -1317,7 +1502,7 @@
             "type": "gear",
             "properties": {}
         },
-        "104": {
+        "117": {
             "name": "Ink (1 ounce bottle)",
             "id": 103,
             "searchable": "ink(1ouncebottle)",
@@ -1326,7 +1511,7 @@
             "type": "gear",
             "properties": {}
         },
-        "105": {
+        "118": {
             "name": "Ink pen",
             "id": 104,
             "searchable": "inkpen",
@@ -1335,7 +1520,7 @@
             "type": "gear",
             "properties": {}
         },
-        "106": {
+        "119": {
             "name": "Jug or pitcher",
             "id": 105,
             "searchable": "jugorpitcher",
@@ -1344,7 +1529,7 @@
             "type": "gear",
             "properties": {}
         },
-        "107": {
+        "120": {
             "name": "Ladder (10-foot)",
             "id": 106,
             "searchable": "ladder(10-foot)",
@@ -1353,7 +1538,7 @@
             "type": "gear",
             "properties": {}
         },
-        "108": {
+        "121": {
             "name": "Lamp",
             "id": 107,
             "searchable": "lamp",
@@ -1362,7 +1547,7 @@
             "type": "gear",
             "properties": {}
         },
-        "109": {
+        "122": {
             "name": "Lantern, bullseye",
             "id": 108,
             "searchable": "lantern,bullseye",
@@ -1371,7 +1556,7 @@
             "type": "gear",
             "properties": {}
         },
-        "110": {
+        "123": {
             "name": "Lantern, hooded",
             "id": 109,
             "searchable": "lantern,hooded",
@@ -1380,7 +1565,7 @@
             "type": "gear",
             "properties": {}
         },
-        "111": {
+        "124": {
             "name": "Lock",
             "id": 110,
             "searchable": "lock",
@@ -1389,7 +1574,7 @@
             "type": "gear",
             "properties": {}
         },
-        "112": {
+        "125": {
             "name": "Magnifying glass",
             "id": 111,
             "searchable": "magnifyingglass",
@@ -1398,7 +1583,7 @@
             "type": "gear",
             "properties": {}
         },
-        "113": {
+        "126": {
             "name": "Manacles",
             "id": 112,
             "searchable": "manacles",
@@ -1407,7 +1592,7 @@
             "type": "gear",
             "properties": {}
         },
-        "114": {
+        "127": {
             "name": "Mess kit",
             "id": 113,
             "searchable": "messkit",
@@ -1416,7 +1601,7 @@
             "type": "gear",
             "properties": {}
         },
-        "115": {
+        "128": {
             "name": "Mirror, steel",
             "id": 114,
             "searchable": "mirror,steel",
@@ -1425,7 +1610,7 @@
             "type": "gear",
             "properties": {}
         },
-        "116": {
+        "129": {
             "name": "Oil (flask)",
             "id": 115,
             "searchable": "oil(flask)",
@@ -1434,7 +1619,7 @@
             "type": "gear",
             "properties": {}
         },
-        "117": {
+        "130": {
             "name": "Paper (one sheet)",
             "id": 116,
             "searchable": "paper(onesheet)",
@@ -1443,7 +1628,7 @@
             "type": "gear",
             "properties": {}
         },
-        "118": {
+        "131": {
             "name": "Parchment (one sheet)",
             "id": 117,
             "searchable": "parchment(onesheet)",
@@ -1452,7 +1637,7 @@
             "type": "gear",
             "properties": {}
         },
-        "119": {
+        "132": {
             "name": "Perfume (vial)",
             "id": 118,
             "searchable": "perfume(vial)",
@@ -1461,7 +1646,7 @@
             "type": "gear",
             "properties": {}
         },
-        "120": {
+        "133": {
             "name": "Pick, miner's",
             "id": 119,
             "searchable": "pick,miner's",
@@ -1470,7 +1655,7 @@
             "type": "gear",
             "properties": {}
         },
-        "121": {
+        "134": {
             "name": "Piton",
             "id": 120,
             "searchable": "piton",
@@ -1479,7 +1664,7 @@
             "type": "gear",
             "properties": {}
         },
-        "122": {
+        "135": {
             "name": "Poison, basic (vial)",
             "id": 121,
             "searchable": "poison,basic(vial)",
@@ -1488,7 +1673,7 @@
             "type": "gear",
             "properties": {}
         },
-        "123": {
+        "136": {
             "name": "Pole (10 feet)",
             "id": 122,
             "searchable": "pole(10feet)",
@@ -1497,7 +1682,7 @@
             "type": "gear",
             "properties": {}
         },
-        "124": {
+        "137": {
             "name": "Pot, iron",
             "id": 123,
             "searchable": "pot,iron",
@@ -1506,7 +1691,7 @@
             "type": "gear",
             "properties": {}
         },
-        "125": {
+        "138": {
             "name": "Potion of healing",
             "id": 124,
             "searchable": "potionofhealing",
@@ -1515,7 +1700,7 @@
             "type": "gear",
             "properties": {}
         },
-        "126": {
+        "139": {
             "name": "Pouch",
             "id": 125,
             "searchable": "pouch",
@@ -1524,7 +1709,7 @@
             "type": "gear",
             "properties": {}
         },
-        "127": {
+        "140": {
             "name": "Quiver",
             "id": 126,
             "searchable": "quiver",
@@ -1533,7 +1718,7 @@
             "type": "gear",
             "properties": {}
         },
-        "128": {
+        "141": {
             "name": "Ram, portable",
             "id": 127,
             "searchable": "ram,portable",
@@ -1542,7 +1727,7 @@
             "type": "gear",
             "properties": {}
         },
-        "129": {
+        "142": {
             "name": "Rations (1 day)",
             "id": 128,
             "searchable": "rations(1day)",
@@ -1551,7 +1736,7 @@
             "type": "gear",
             "properties": {}
         },
-        "130": {
+        "143": {
             "name": "Robes",
             "id": 129,
             "searchable": "robes",
@@ -1560,7 +1745,7 @@
             "type": "gear",
             "properties": {}
         },
-        "131": {
+        "144": {
             "name": "Rope, hempen (50 feet)",
             "id": 130,
             "searchable": "rope,hempen(50feet)",
@@ -1569,7 +1754,7 @@
             "type": "gear",
             "properties": {}
         },
-        "132": {
+        "145": {
             "name": "Rope, silk (50 feet)",
             "id": 131,
             "searchable": "rope,silk(50feet)",
@@ -1578,7 +1763,7 @@
             "type": "gear",
             "properties": {}
         },
-        "133": {
+        "146": {
             "name": "Sack",
             "id": 132,
             "searchable": "sack",
@@ -1587,7 +1772,7 @@
             "type": "gear",
             "properties": {}
         },
-        "134": {
+        "147": {
             "name": "Scale, merchant's",
             "id": 133,
             "searchable": "scale,merchant's",
@@ -1596,7 +1781,7 @@
             "type": "gear",
             "properties": {}
         },
-        "135": {
+        "148": {
             "name": "Sealing wax",
             "id": 134,
             "searchable": "sealingwax",
@@ -1605,7 +1790,7 @@
             "type": "gear",
             "properties": {}
         },
-        "136": {
+        "149": {
             "name": "Shovel",
             "id": 135,
             "searchable": "shovel",
@@ -1614,7 +1799,7 @@
             "type": "gear",
             "properties": {}
         },
-        "137": {
+        "150": {
             "name": "Signal whistle",
             "id": 136,
             "searchable": "signalwhistle",
@@ -1623,7 +1808,7 @@
             "type": "gear",
             "properties": {}
         },
-        "138": {
+        "151": {
             "name": "Signet ring",
             "id": 137,
             "searchable": "signetring",
@@ -1632,7 +1817,7 @@
             "type": "gear",
             "properties": {}
         },
-        "139": {
+        "152": {
             "name": "Soap",
             "id": 138,
             "searchable": "soap",
@@ -1641,7 +1826,7 @@
             "type": "gear",
             "properties": {}
         },
-        "140": {
+        "153": {
             "name": "Spellbook",
             "id": 139,
             "searchable": "spellbook",
@@ -1650,7 +1835,7 @@
             "type": "gear",
             "properties": {}
         },
-        "141": {
+        "154": {
             "name": "Spikes, iron (10)",
             "id": 140,
             "searchable": "spikes,iron(10)",
@@ -1659,7 +1844,7 @@
             "type": "gear",
             "properties": {}
         },
-        "142": {
+        "155": {
             "name": "Spyglass",
             "id": 141,
             "searchable": "spyglass",
@@ -1668,7 +1853,7 @@
             "type": "gear",
             "properties": {}
         },
-        "143": {
+        "156": {
             "name": "Tent, two-person",
             "id": 142,
             "searchable": "tent,two-person",
@@ -1677,7 +1862,7 @@
             "type": "gear",
             "properties": {}
         },
-        "144": {
+        "157": {
             "name": "Tinderbox",
             "id": 143,
             "searchable": "tinderbox",
@@ -1686,7 +1871,7 @@
             "type": "gear",
             "properties": {}
         },
-        "145": {
+        "158": {
             "name": "Torch",
             "id": 144,
             "searchable": "torch",
@@ -1695,7 +1880,7 @@
             "type": "gear",
             "properties": {}
         },
-        "146": {
+        "159": {
             "name": "Vial",
             "id": 145,
             "searchable": "vial",
@@ -1704,7 +1889,7 @@
             "type": "gear",
             "properties": {}
         },
-        "147": {
+        "160": {
             "name": "Waterskin",
             "id": 146,
             "searchable": "waterskin",
@@ -1713,7 +1898,7 @@
             "type": "gear",
             "properties": {}
         },
-        "148": {
+        "161": {
             "name": "Whetstone",
             "id": 147,
             "searchable": "whetstone",

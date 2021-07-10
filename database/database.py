@@ -15,17 +15,6 @@ def similarity(a, b):
 def sort_by_similarity_index(e):
     return e.similarityIndex
 
-model_player = {
-        "first": '',
-        "last": '',
-        "id": 0,
-        "balance": 0,
-        "rolls": {},                # contains dice rolls
-        "inventory": {},            # contains simplified item data
-        "counters": {},             # contains counters. min, max, current
-        "misc": {}                  # free space for extensions
-    }
-
 
 class Database:
 
@@ -182,10 +171,11 @@ class Database:
         if existing != None:
             self.delete_player(id)
 
-        player = model_player.copy()
+        player = self.model_player.copy()
         player['first'] = first
         player['last'] = last
         player['id'] = int(id)
+        player['rolls']['pid'] = str(id)
         players.insert(player)
 
 
@@ -246,9 +236,9 @@ class SearchResult:
         self.name = name
 
     def item(self):
-        return items.get(Row.id == id)
+        return items.get(Row.id == self.id)
 
 
 if __name__ == '__main__':
     database = Database()
-    pprint(database.get_player_by_id(239517576781234177))
+    pprint(database.get_item_best_match("thieves tools"))

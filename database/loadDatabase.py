@@ -31,7 +31,7 @@ def populatePlayerTable():
 def populateItemsTable():
     counter = 0
     # ARMOR
-    with open('./src/data/csv/armor.csv') as armorFile:
+    with open(os.path.join(script_dir,'data/input/armor.csv')) as armorFile:
         rows = csv.reader(armorFile, delimiter=',')
         x = 0
         for data in rows:
@@ -60,7 +60,7 @@ def populateItemsTable():
             x += 1
 
     # WEAPONS
-    with open('./src/data/csv/weapons.csv') as weaponFile:
+    with open(os.path.join(script_dir,'data/input/weapons.csv')) as weaponFile:
         rows = csv.reader(weaponFile, delimiter=',')
         damage = {
             'b': 'bludgeoning',
@@ -95,7 +95,7 @@ def populateItemsTable():
                     counter += 1
             x += 1
     # GEAR
-    with open('./src/data/csv/gear.csv') as gearFile:
+    with open(os.path.join(script_dir,'data/input/gear.csv')) as gearFile:
         rows = csv.reader(gearFile, delimiter=',')
         x = 0
         for data in rows:
@@ -119,5 +119,5 @@ def populateItemsTable():
             x += 1
             
 if __name__ == '__main__':
-    # populateItemsTable()
-    populatePlayerTable()
+    populateItemsTable()
+    # populatePlayerTable()
