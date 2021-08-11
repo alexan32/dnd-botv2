@@ -9,22 +9,11 @@ class CommandCog(commands.Cog):
         self.bot = bot
 
     # @commands.command()
-    # async def identity(self, ctx, *args):
-    #     await ctx.send(f"```Missing required argument. See help for more details.```", delete_after=15.0)
+    # async def addPlayer(self, ctx):
+    #     response = handler.setup()
+    #     await ctx.send(f"```{response}```", delete_after=15.0)
+    #     await ctx.message.delete()
     #     return
-
-    # @commands.command()
-    # async def admin(self, ctx, *args):
-    #     await ctx.send(f"```Missing required argument. See help for more details.```", delete_after=15.0)
-    #     return
-
-
-    @commands.command()
-    async def setup(self, ctx):
-        response = handler.setup()
-        await ctx.send(f"```{response}```", delete_after=15.0)
-        await ctx.message.delete()
-        return
 
 
     @commands.command()

@@ -1,7 +1,6 @@
 # commands related to spell slots and hit point tracking
 
 from discord.ext import commands
-import database.database as database
 import botcommands.handler as handler
 
 class CommandCog(commands.Cog):
@@ -13,6 +12,7 @@ class CommandCog(commands.Cog):
         response = handler.handler(ctx, 'register', first, last)
         await ctx.send(f"```{response}```", delete_after=15.0)
         await ctx.message.delete()
+
 
     @commands.command()
     async def unregister(self, ctx):

@@ -20,22 +20,6 @@ bot.load_extension("botcommands.inventory")
 bot.load_extension("botcommands.tracker")
 bot.load_extension("botcommands.character")
 
-dice = botcommands.handler.dice
-database = botcommands.handler.database
-
-print("\ninitializing discord bot extensions...\n")
-for plugin in config['plugins']:
-    spec = importlib.util.spec_from_file_location(plugin, os.path.join(script_dir, f"plugins/{plugin}.py"))
-    mod = importlib.util.module_from_spec(spec)
-    spec.loader.exec_module(mod)
-    try:
-        mod.setup(bot, dice, database)
-    except AttributeError as e:
-        print(f"* plugin '{plugin}' had no setup function and will be skipped.")
-    else:
-        print(f"* loaded '{plugin}'")
-print('done\n')
-
 
 @bot.event
 async def on_ready():

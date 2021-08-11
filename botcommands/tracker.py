@@ -1,7 +1,6 @@
 # commands related to spell slots and hit point tracking
 
 from discord.ext import commands
-import database.database as database
 
 
 class CommandCog(commands.Cog):

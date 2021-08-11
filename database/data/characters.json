@@ -1,0 +1,16 @@
+{
+    "_default": {
+        "1": {
+            "first": "nix",
+            "last": "cantor",
+            "characterId": "",
+            "currency": 0,
+            "rolls": {
+                "pid": "239517576781234177"
+            },
+            "inventory": [],
+            "counters": {},
+            "id": 239517576781234177
+        }
+    }
+}

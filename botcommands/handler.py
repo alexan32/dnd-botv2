@@ -1,6 +1,6 @@
-import database.database as db
+import database.database as database
 import dice.dice_processor as dp
-import importlib.util
+from uuid import uuid4
 import json
 import os
 
@@ -9,58 +9,46 @@ with open(os.path.join(script_dir, "../config.json")) as f:
     config = json.load(f)
 
 dice = dp.DiceProcessor()
-database = db.Database()
-
-# print("\ninitializing back end extensions...\n")
-# script_dir = os.path.dirname(__file__)
-# with open(os.path.join(script_dir, '../config.json')) as f:
-#     config = json.load(f)
-#     for plugin in config['plugins']:
-#         spec = importlib.util.spec_from_file_location(plugin, os.path.join(script_dir, f"../plugins/{plugin}.py"))
-#         mod = importlib.util.module_from_spec(spec)
-#         spec.loader.exec_module(mod)
-#         try:
-#             mod.init_plugin(dice, database)
-#         except AttributeError:
-#             print(f"* plugin '{plugin}' had no init_plugin function and will be skipped")
-#         else:
-#             print(f"* loaded '{plugin}'")
-#     print('done')
-
 
 def name_sort(e):
     return e['name']
+
+def is_admin(ctx):
+    roles = ctx.author.roles
+    for role in roles:
+        print(role.name)
+    return True
 
 # HANDLER ------------------------------------------------------------------------
 
 def handler(ctx, command, *args, **kwargs):
 
-    userId = database.get_assumed_id(ctx.author.id)
+    userId = ctx.author.id
     print(f"\ncommand: {command} {args} {kwargs}\nid: {userId}\n")
 
     if command == 'roll':
-        return player_roll(userId, args[0])
+        return character_roll(userId, args[0])
 
     elif command == 'save':
-        return player_save_roll(userId, args[0], args[1])
+        return character_save_roll(userId, args[0], args[1])
 
     elif command == 'erase':
-        return player_delete_roll(userId, args[0])
+        return character_delete_roll(userId, args[0])
 
     elif command == 'list':
-        return player_list_rolls(userId)
+        return character_list_rolls(userId)
 
     elif command == 'inventory':
-        return player_list_inventory(userId)
+        return character_list_inventory(userId)
 
     elif command == 'give':
         print(kwargs)
-        if database.is_admin(userId):
+        if is_admin(userId):
             print('sender is admin')
             return admin_give_item(kwargs['recipient'], kwargs['item'], kwargs['count'])
         else:
-            print('sender is player')
-            return player_give_item(userId, kwargs['recipient'], kwargs['item'], kwargs['count'])
+            print('sender is character')
+            return character_give_item(userId, kwargs['recipient'], kwargs['item'], kwargs['count'])
 
     elif command == 'register':
         return register(userId, args[0], args[1])
@@ -70,54 +58,59 @@ def handler(ctx, command, *args, **kwargs):
 
 # CHARACTER -----------------------------------------------------------------------
 
-def register(playerId, first, last):
-    database.create_player(playerId, first, last)
-    return f"player '{first}' created successfully"
+def register(characterId, first, last):
+    user = database.get_user_by_id(id)
+    for characterId in user["characters"]:
+        existing = database.get_character_by_id(characterId)
+        if first == existing['first']:
+            return f"You already have a character named \"{first}\"."
+    database.create_character(str(uuid4()), first, last)
+    return f"character '{first}' created successfully"
 
 
-def unregister(playerId):
-    player = database.get_player_by_id(playerId)
-    database.delete_player(playerId)
-    return f"player '{player['first']}' deleted successfully"
+def unregister(characterId):
+    character = database.get_character_by_id(characterId)
+    database.delete_character(characterId)
+    return f"character '{character['first']}' deleted successfully"
 
 # DICE ----------------------------------------------------------------------------
 
-def player_roll(playerId, diceString):
+def character_roll(characterId, diceString):
     diceString = diceString.strip().lower()
-    player = database.get_player_by_id(playerId)
-    nameSpace = player['rolls']
+    character = database.get_character_by_id(characterId)
+    nameSpace = character['rolls']
     result = dice.processString(diceString, nameSpace)
-    response = f"{player['first']} rolled {result}" if diceString not in nameSpace.keys() else f"{player['first']} rolled {diceString}: {result}"
+    response = f"{character['first']} rolled {result}" if diceString not in nameSpace.keys() else f"{character['first']} rolled {diceString}: {result}"
     return response
 
 
-def player_save_roll(playerId, key, diceString):
+def character_save_roll(characterId, key, diceString):
     diceString = diceString.strip().lower()
     key = key.strip().lower()
-    player = database.get_player_by_id(playerId)
-    player['rolls'][key] = diceString
-    database.update_player(playerId, changedValues={'rolls': player['rolls']})
+    character = database.get_character_by_id(characterId)
+    character['rolls'][key] = diceString
+    database.update_character(characterId, changedValues={'rolls': character['rolls']})
     return f"saved '{key}' successfully"
 
 
-def player_delete_roll(playerId, key):
+def character_delete_roll(characterId, key):
     key = key.strip().lower()
-    player = database.get_player_by_id(playerId)
+    character = database.get_character_by_id(characterId)
     try:
-        del player['rolls'][key]
-        database.update_player(playerId, changedValues={'rolls': player['rolls']})
+        del character['rolls'][key]
+        database.update_character(characterId, changedValues={'rolls': character['rolls']})
     except KeyError as e:
         return f"Delete failed. No saved roll called {e}"
     return f"deleted '{key}' successfully"
 
 
-def player_list_rolls(playerId):
-    player = database.get_player_by_id(playerId)
-    nameSpace = player['rolls']
+def character_list_rolls(characterId):
+    character = database.get_character_by_id(characterId)
+    nameSpace = character['rolls']
     keys = [*nameSpace]
     keys.sort()
 
-    response = f"{player['first']}'s dice\n" + ''.ljust(40, '=') + '\n'
+    response = f"{character['first']}'s dice\n" + ''.ljust(40, '=') + '\n'
     for key in keys:
         response += f"{key}:".ljust(25, ' ') + nameSpace[key] + "\n"
     return response
@@ -125,17 +118,17 @@ def player_list_rolls(playerId):
 
 # INVENTORY ----------------------------------------------------------------------------
 
-def player_list_inventory(playerId):
-    player = database.get_player_by_id(playerId)
+def character_list_inventory(characterId):
+    character = database.get_character_by_id(characterId)
     itemList = []
-    for key in player['inventory'].keys():
-        itemList.append(player['inventory'][key])
+    for key in character['inventory'].keys():
+        itemList.append(character['inventory'][key])
     return build_inventory_string(itemList, includeTotal=True)
 
 
 def admin_give_item(recipientName, itemName, quantity):
     # get recipientId
-    recipient = database.get_player_by_name(recipientName)
+    recipient = database.get_character_by_name(recipientName)
     if recipient == None:
         return f"No character named '{recipientName}'"
     # get itemId
@@ -148,13 +141,13 @@ def admin_give_item(recipientName, itemName, quantity):
     elif len(results) == 0:
         return f"No items matched '{itemName}'"
     else:
-        newQuantity, numberRemoved = database.update_player_inventory(recipient['id'], results[0].id, quantity)
+        newQuantity, numberRemoved = database.update_character_inventory(recipient['id'], results[0].id, quantity)
         return f"{recipientName} recieved {quantity} {itemName}('s)"
 
 
-def player_drop_item(playerId, itemName, quantity):
+def character_drop_item(characterId, itemName, quantity):
     # get giver
-    giver = database.get_player_by_id(playerId)
+    giver = database.get_character_by_id(characterId)
 
     # get Item Id
     results = database.search_items(itemName)
@@ -162,16 +155,16 @@ def player_drop_item(playerId, itemName, quantity):
         return f"No item named '{itemName}'"
     itemId = results[0].id
 
-    newQuantity, numberRemoved = database.update_player_inventory(playerId, itemId, -1 * quantity)
+    newQuantity, numberRemoved = database.update_character_inventory(characterId, itemId, -1 * quantity)
     return f"{giver['first']} dropped {numberRemoved} {itemName}('s). {newQuantity} remaining."
 
 
-def player_give_item(playerId, recipientName, itemName, quantity):
+def character_give_item(characterId, recipientName, itemName, quantity):
     # get giver
-    giver = database.get_player_by_id(playerId)
+    giver = database.get_character_by_id(characterId)
 
     # get recipientId
-    recipient = database.get_player_by_name(recipientName)
+    recipient = database.get_character_by_name(recipientName)
     if recipient == None:
         return f"No character named '{recipientName}'"
 
@@ -182,10 +175,10 @@ def player_give_item(playerId, recipientName, itemName, quantity):
     itemId = results[0].id
     
     # perform transaction
-    newQuantity, numberRemoved = database.update_player_inventory(playerId, itemId, -1 * quantity)
+    newQuantity, numberRemoved = database.update_character_inventory(characterId, itemId, -1 * quantity)
     if numberRemoved == 0:
         return f"You do not have any {itemName}'s in your inventory"
-    database.update_player_inventory(recipient['id'], itemId, numberRemoved)
+    database.update_character_inventory(recipient['id'], itemId, numberRemoved)
 
     response = f"{giver['first']} gave {recipientName} {numberRemoved} {itemName}('s)"
     if numberRemoved != quantity:
@@ -207,12 +200,3 @@ def build_inventory_string(itemList, fill=' ', includeTotal=False):
         response += ''.ljust(60, '=') + '\n'
         response += 'Total:'.ljust(55, fill) + f"{totalWeight}"
     return response
-
-
-# SETUP ---------------------------------------------------------------------------
-
-def setup():
-    for admin in config['root_admins']:
-        database.set_admin(admin)
-
-    return "root_admins have been added from config"
