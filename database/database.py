@@ -1,6 +1,7 @@
 from tinydb import TinyDB, Query
 from difflib import SequenceMatcher
 from pprint import pprint
+from uuid import uuid4
 import json
 import os
 
@@ -46,15 +47,21 @@ def create_user(userId):
 def get_user_by_id( userId):
     return users.get(Row.id == int(userId))
 
+def update_user( id, changedValues={}):
+    print(f"changed values: {changedValues}")
+    print(f"id: {id}")
+    users.update(changedValues, Row.id == int(id))
+
 # PLAYER DATA ---------------------------------------------------
 
 def get_character_by_id( id):
-    return characters.get(Row.id == int(id))
-
+    return characters.get(Row.id == id)
 
 def get_character_by_name( firstName):
     return characters.get(Row.first == firstName)
 
+def get_character_by_name_and_user(userId, firstName):
+    return characters.get((Row.first == firstName) & (Row.userId == userId))
 
 def update_character( id, changedValues={}):
     print(f"changed values: {changedValues}")
@@ -136,13 +143,16 @@ def update_character_inventory( characterId, itemId, quantity=1):
     return newQuantity, numberRemoved
         
 
-def create_character(id, first, last):
+def create_character(userId, first, last):
+    cid = str(uuid4())
     character = model_character.copy()
     character['first'] = first
     character['last'] = last
-    character['id'] = int(id)
-    character['rolls']['pid'] = str(id)
+    character['id'] = cid
+    character['userId'] = userId
+    character['rolls']['cid'] = cid
     characters.insert(character)
+    return character, cid
 
 
 def delete_character(id):
@@ -192,3 +202,7 @@ def get_item_best_match(itemName):
         if result.similarityIndex > bestMatch.similarityIndex:
             bestMatch = result
     return bestMatch
+
+
+if __name__ == "__main__":
+    print(get_user_by_id(123456789))

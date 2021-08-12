@@ -24,7 +24,11 @@ def is_admin(ctx):
 def handler(ctx, command, *args, **kwargs):
 
     userId = ctx.author.id
-    print(f"\ncommand: {command} {args} {kwargs}\nid: {userId}\n")
+    groupId = ctx.guild.id
+    user = database.get_user_by_id(userId)
+    if user is None:
+        user = database.create_user(userId)
+    print(f"\ncommand: {command} {args} {kwargs}\n userId: {userId}\n groupId: {groupId}\n")
 
     if command == 'roll':
         return character_roll(userId, args[0])
@@ -50,29 +54,67 @@ def handler(ctx, command, *args, **kwargs):
             print('sender is character')
             return character_give_item(userId, kwargs['recipient'], kwargs['item'], kwargs['count'])
 
-    elif command == 'register':
-        return register(userId, args[0], args[1])
+    elif command == 'create_character':
+        return create_character(userId, args[0], args[1])
 
-    elif command == 'unregister':
-        return unregister(userId)
+    elif command == 'select_character':
+        return select_character(userId, args[0])
 
+    elif command == 'list_characters':
+        return list_characters(userId)
+
+    elif command == 'delete_character':
+        return delete_character(userId, args[0])
 # CHARACTER -----------------------------------------------------------------------
 
-def register(characterId, first, last):
-    user = database.get_user_by_id(id)
+def create_character(userId, first, last):
+    user = database.get_user_by_id(userId)
     for characterId in user["characters"]:
         existing = database.get_character_by_id(characterId)
         if first == existing['first']:
             return f"You already have a character named \"{first}\"."
-    database.create_character(str(uuid4()), first, last)
-    return f"character '{first}' created successfully"
+    character, id = database.create_character(userId, first, last)
+    user["characters"].append(id)
+    user["activeCharacter"] = id
+    database.update_user(userId, {**user})
+    return f"character \"{first} {last}\" created successfully and set active."
 
 
-def unregister(characterId):
-    character = database.get_character_by_id(characterId)
-    database.delete_character(characterId)
-    return f"character '{character['first']}' deleted successfully"
+def select_character(userId, first):
+    user = database.get_user_by_id(userId)
+    character = database.get_character_by_name_and_user(userId, first)
+    if character is None:
+        return f"You have no character with name \"{first}\""
+    user['activeCharacter'] = character['id']
+    database.update_user(userId, {**user})
+    return f"set character \"{character['first']} {character['last']}\" as active."
 
+
+def list_characters(userId):
+    user = database.get_user_by_id(userId)
+    if len(user['characters']) == 0:
+        return "No characters here! :'("
+    response = ""
+    for characterId in user["characters"]:
+        character = database.get_character_by_id(characterId)
+        response += f"{character['first']} {character['last']}\n"
+    return response
+    
+
+def delete_character(userId, first):
+    post = ""
+    user = database.get_user_by_id(userId)
+    character = database.get_character_by_name_and_user(userId, first)
+    if character is None:
+        return f"You have no character with name \"{first}\""
+    cid = character['id']
+    database.delete_character(cid)
+    user['characters'].remove(cid)
+    if user['activeCharacter'] == cid:
+        user['activeCharacter'] = ""
+        post = "\nActive character is not set. \nUse \"!register\" to create a new character or \"!character\" to select an existing one."
+    database.update_user(userId, {**user})
+    return f"Deleted character \"{character['first']} {character['last']}\". " + post
 # DICE ----------------------------------------------------------------------------
 
 def character_roll(characterId, diceString):
