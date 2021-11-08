@@ -46,7 +46,16 @@ def save_dice(ctx, key, value):
 
 
 def roll_dice(ctx, input):
-    return utils.roll(ctx, input)
+    character = database.get_user_character(ctx.author.id, ctx.guild.id)
+    try:
+        response = utils.roll(ctx, input)
+    except Exception as e:
+        print(e)
+        return e.message
+    if input in character["rolls"].keys():
+        response = f"{character['first']} {character['last']} rolled {input}: {response}"
+    print(response)
+    return response
 
 
 def list_dice(ctx, index):

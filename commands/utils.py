@@ -34,7 +34,6 @@ def roll(ctx, input):
     rolls = character["rolls"]
 
     print(f"input string: {input}")
-    print(f"nameSpace: {rolls}")
     if input in rolls:
         diceString = rolls[input]
     else:
