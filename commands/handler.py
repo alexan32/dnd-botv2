@@ -17,7 +17,7 @@ def handler(ctx, command, *args, **kwargs):
     print(f"\ncommand: {command} {args} {kwargs}\n discordId: {ctx.author.id}\n guildId: {ctx.guild.id}\n")
     
     existingCharacter = database.get_user_character(ctx.author.id, ctx.guild.id)
-    if existingCharacter is None:
+    if existingCharacter is None and command != "create_character":
         return "You don't have a character yet! Use the \"!create_character\" command to get started."
 
     if command == 'create_character':
