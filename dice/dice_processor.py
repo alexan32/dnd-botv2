@@ -30,16 +30,9 @@ class DiceProcessor:
     def processString(self, input, nameSpace):
         diceString = nameSpace[input] if input in nameSpace.keys() else input
         tokens = self.tokenize(diceString)
-        print(f"tokens: {tokens}")
-        
         tokens = self.populateVariables(tokens, nameSpace)
-        print(f"first pass: {tokens}")
-
         tokens = self.populateVariables(tokens, nameSpace)
-        print(f"second pass: {tokens}")
-
         processedString = ''.join(tokens)
-        print(f"as string: {processedString}")
 
         try:
             return d20.roll(processedString, stringifier=self.strigifier)

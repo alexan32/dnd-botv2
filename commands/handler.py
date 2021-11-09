@@ -16,6 +16,10 @@ def handler(ctx, command, *args, **kwargs):
 
     print(f"\ncommand: {command} {args} {kwargs}\n discordId: {ctx.author.id}\n guildId: {ctx.guild.id}\n")
     
+    existingCharacter = database.get_user_character(ctx.author.id, ctx.guild.id)
+    if existingCharacter is None:
+        return "You don't have a character yet! Use the \"!create_character\" command to get started."
+
     if command == 'create_character':
         return create_character(ctx, args[0], args[1])
     elif command == 'save_dice':
@@ -26,12 +30,34 @@ def handler(ctx, command, *args, **kwargs):
         return list_dice(ctx, args[0])
     elif command == 'search_dice':
         return search_dice(ctx, args[0])
+    elif command == 'delete_dice':
+        return delete_dice(ctx, args[0])
+    elif command == 'save_counter':
+        return save_counter(ctx, args[0], args[1])
+    elif command == 'increment_counter':
+        return increment_counter(ctx, args[0], args[1])
+    elif command == 'list_counters':
+        return list_counters(ctx, args[0])
+    elif command == 'search_counters':
+        return search_counters(ctx, args[0])
+
 
 def create_character(ctx, first, last):
     success = database.create_character(ctx.guild.id, ctx.author.id, first, last)
     if success:
         return f"Character \"{first} {last}\" created successfully."
     return f"Failed to create character."
+
+
+def delete_dice(ctx, saveName):
+    character = database.get_user_character(ctx.author.id, ctx.guild.id)
+    if saveName in character["rolls"]:
+        del character["rolls"][saveName]
+        database.upsert_character(ctx.author.id, ctx.guild.id, character)
+        response = f"\"{saveName}\" deleted from saved dice rolls."
+    else:
+        response = f"No dice string named \"{saveName}\"."
+    return response
 
 
 def save_dice(ctx, key, value):
@@ -72,6 +98,62 @@ def search_dice(ctx, searchString):
     for key in character["rolls"].keys():
         if utils.similarity(key, searchString) > 0.6:
             temp[key] = character["rolls"][key]
+    if len(temp.keys()) == 0:
+        return f"No dice rolls matched with \"{searchString}\""
+    pages = utils.paginateDict(temp)
+    return pages[0]
+
+
+def save_counter(ctx, counterName, max):
+    character = database.get_user_character(ctx.author.id, ctx.guild.id)
+    isNew = counterName not in character["counters"].keys()
+    character["counters"][counterName] = {
+        "max": int(max),
+        "value": int(max)
+    }
+    database.upsert_character(ctx.author.id, ctx.guild.id, character)
+
+    if isNew:
+        return f"Created counter \"{counterName}\" with a max value of {max}."
+    else:
+        return f"Counter \"{counterName}\" set to {max}."
+
+
+def increment_counter(ctx, counterName, increment):
+    character = database.get_user_character(ctx.author.id, ctx.guild.id)
+    if not counterName in character["counters"]:
+        return f"Counter \"{counterName}\" not found."
+    counter = character["counters"][counterName]
+    counter["value"] = int(counter["value"]) + int(increment)
+    if counter["value"] > counter["max"]:
+        counter["value"] = counter["max"]
+    elif counter["value"] < 0:
+        counter["value"] = 0
+    character["counters"][counterName] = counter
+    database.upsert_character(ctx.author.id, ctx.guild.id, character)
+    return f"{counterName}: {counter['value']} / {counter['max']}"
+
+
+def list_counters(ctx, index):
+    print(f"list_counters. index: {index}")
+    character = database.get_user_character(ctx.author.id, ctx.guild.id)
+    counters = character["counters"]
+    temp = {}
+    for key in counters.keys():
+        temp[key] = f"{counters[key]['value']} / {counters[key]['max']}"
+    pages = utils.paginateDict(temp)
+    if index > len(pages)-1:
+        index = len(pages)-1
+    return f"Page {index+1}/{len(pages)}" + " ".ljust(30, "=") + "\n" + pages[index]
+
+
+def search_counters(ctx, searchString):
+    character = database.get_user_character(ctx.author.id, ctx.guild.id)
+    counters = character["counters"]
+    temp = {}
+    for key in counters.keys():
+        if utils.similarity(key, searchString) > 0.6:
+            temp[key] = f"{counters[key]['value']} / {counters[key]['max']}"
     if len(temp.keys()) == 0:
         return f"No dice rolls matched with \"{searchString}\""
     pages = utils.paginateDict(temp)

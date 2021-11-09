@@ -23,13 +23,28 @@ class CommandCog(commands.Cog):
         if _type == 'get':
             print('get')
             response = handler.handler(ctx, 'roll_dice', output)
+            await ctx.send(f"```{response}```")
+            await ctx.message.delete()
         elif _type == 'set':
             print('get')
             response = handler.handler(ctx, 'save_dice', output[0], output[1])
+            await ctx.send(f"```{response}```", delete_after=60.0)
+            await ctx.message.delete()
         else:
             print('err')
             response = output
-        await ctx.send(f"```{response}```")
+            await ctx.send(f"```{response}```")
+            await ctx.message.delete()
+
+
+    @commands.command()
+    async def delete_roll(self, ctx, *args):
+        saveName = "".join(args)
+        if saveName == "":
+            response = "Missing required arg \"savename\""
+        else:
+            response = handler.handler(ctx, "delete_dice", saveName)
+        await ctx.send(f"```{response}```", delete_after=60.0)
         await ctx.message.delete()
 
 
