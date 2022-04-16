@@ -6,11 +6,14 @@ import json
 import os
 
 script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+games = TinyDB(os.path.join(script_dir, 'data/games.json'))
 items = TinyDB(os.path.join(script_dir, 'data/items.json'))
 characters = TinyDB(os.path.join(script_dir, 'data/characters.json'))
 users = TinyDB(os.path.join(script_dir, 'data/users.json'))
 Row = Query()
 
+with open(os.path.join(script_dir, "models/game.json")) as f:
+    model_game = json.load(f)
 with open(os.path.join(script_dir, "models/user.json")) as f:
     model_user = json.load(f)
 with open(os.path.join(script_dir, "models/character.json")) as f:
@@ -36,16 +39,33 @@ def similarity(a, b):
 def sort_by_similarity_index(e):
     return e.similarityIndex
 
+# GAME DATA -----------------------------------------------
+
+def get_game_by_id(guildId):
+    return games.get(Row.id == int(guildId))
+
+def create_game(guildId, ruleset):
+    with open(os.path.join(script_dir, f"ruleset/{ruleset}.json")) as f:
+        gameConfig = json.load(f)
+    game = model_game.copy()
+    game['id'] = int(guildId)
+    game = {**game, **gameConfig}
+    games.insert(game)
+    return game
+
+def update_game(guildId, changedValues = {}):
+    games.update(changedValues, Row.id == int(guildId))
+
 # USER DATA -----------------------------------------------
 
-def create_user(userId):
+def create_user(discordId):
     user = model_user.copy()
-    user['id'] = int(userId)
+    user['id'] = int(discordId)
     users.insert(user)
     return user
 
-def get_user_by_id( userId):
-    return users.get(Row.id == int(userId))
+def get_user_by_id( discordId):
+    return users.get(Row.id == int(discordId))
 
 def update_user( id, changedValues={}):
     print(f"changed values: {changedValues}")
@@ -60,8 +80,14 @@ def get_character_by_id( id):
 def get_character_by_name( firstName):
     return characters.get(Row.first == firstName)
 
-def get_character_by_name_and_user(userId, firstName):
-    return characters.get((Row.first == firstName) & (Row.userId == userId))
+def get_character_by_name_and_game(guildId, firstName):
+    return characters.get((Row.first == firstName) & (Row.guildId == guildId))
+
+def get_character_by_name_and_user(discordId, firstName):
+    return characters.get((Row.first == firstName) & (Row.discordId == discordId))
+
+def search_character_by_user_and_game(discordId, guildId):
+    return characters.search((Row.discordId == discordId) & (Row.guildId == guildId))
 
 def update_character( id, changedValues={}):
     print(f"changed values: {changedValues}")
@@ -143,14 +169,16 @@ def update_character_inventory( characterId, itemId, quantity=1):
     return newQuantity, numberRemoved
         
 
-def create_character(userId, first, last):
+def create_character(discordId, guildId, first, last):
+    rulesetCharacter = get_game_by_id(guildId)["models"]["character"]
     cid = str(uuid4())
     character = model_character.copy()
     character['first'] = first
     character['last'] = last
     character['id'] = cid
-    character['userId'] = userId
-    character['rolls']['cid'] = cid
+    character['discordId'] = discordId
+    character['guildId'] = guildId
+    character = {**character, **rulesetCharacter}
     characters.insert(character)
     return character, cid
 

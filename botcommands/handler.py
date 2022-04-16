@@ -1,6 +1,8 @@
 import database.database as database
 import dice.dice_processor as dp
 from uuid import uuid4
+from pprint import pprint
+import botcommands.utils as utils
 import json
 import os
 
@@ -8,237 +10,183 @@ script_dir = os.path.dirname(__file__)
 with open(os.path.join(script_dir, "../config.json")) as f:
     config = json.load(f)
 
+acceptedRoles = config["playerRoles"] + config["adminRoles"]
 dice = dp.DiceProcessor()
 
 def name_sort(e):
     return e['name']
 
-def is_admin(ctx):
+def adminAccess(ctx):
     roles = ctx.author.roles
     for role in roles:
-        print(role.name)
-    return True
+        if role.name.lower() in config["adminRoles"]:
+            return True
+    return False
+
+def allowAccess(ctx):
+    roles = ctx.author.roles
+    for role in roles:
+        if role.name.lower() in acceptedRoles:
+            return True
+    return False
+
+adminRequiredMessage = "You need admin permissions for that. Ask a moderator to give you one of the following roles: "
+for role in config['adminRoles']:
+    adminRequiredMessage += f"\n{role}"
 
 # HANDLER ------------------------------------------------------------------------
 
 def handler(ctx, command, *args, **kwargs):
 
-    userId = ctx.author.id
-    groupId = ctx.guild.id
-    user = database.get_user_by_id(userId)
+    print(f"\ncommand: {command} {args} {kwargs}\n discordId: {ctx.author.id}\n guildId: {ctx.guild.id}\n")
+
+    if not allowAccess(ctx) and command != "register_server":
+        print(f"access denied. user roles: {ctx.author.roles}")
+        return f"You do not have the appropriate permission. Ask a server admin to give you the {config['playerRoles'][0]} role"
+
+    user = database.get_user_by_id(ctx.author.id)
     if user is None:
-        user = database.create_user(userId)
-    print(f"\ncommand: {command} {args} {kwargs}\n userId: {userId}\n groupId: {groupId}\n")
+        user = database.create_user(ctx.author.id)
 
-    if command == 'roll':
-        return character_roll(userId, args[0])
+    # server config
+    if command == 'register_server':
+        return register_server(ctx, "5e")
 
-    elif command == 'save':
-        return character_save_roll(userId, args[0], args[1])
+    elif command == 'server_ruleset':
+        pass
 
-    elif command == 'erase':
-        return character_delete_roll(userId, args[0])
+    elif command == 'change_directory':
+        return change_directory(ctx, args[0])
 
-    elif command == 'list':
-        return character_list_rolls(userId)
+    elif command == 'list_directory':
+        return list_directory(ctx)
 
-    elif command == 'inventory':
-        return character_list_inventory(userId)
+    elif command == 'make_directory':
+        return make_directory(ctx, args[0])
 
-    elif command == 'give':
-        print(kwargs)
-        if is_admin(userId):
-            print('sender is admin')
-            return admin_give_item(kwargs['recipient'], kwargs['item'], kwargs['count'])
-        else:
-            print('sender is character')
-            return character_give_item(userId, kwargs['recipient'], kwargs['item'], kwargs['count'])
+    # rolls
+    elif command == 'roll':
+        pass
 
+    elif command == 'save_roll':
+        pass
+
+    elif command == 'delete_roll':
+        pass
+
+    elif command == 'list_rolls':
+        pass
+    # character inventory
+    elif command == 'list_inventory':
+        pass
+
+    elif command == 'give_item':
+        pass
+
+    elif command == 'drop_item':
+        pass
+
+    # character
     elif command == 'create_character':
-        return create_character(userId, args[0], args[1])
-
-    elif command == 'select_character':
-        return select_character(userId, args[0])
-
-    elif command == 'list_characters':
-        return list_characters(userId)
+        return create_character(ctx, args[0], args[1])
 
     elif command == 'delete_character':
-        return delete_character(userId, args[0])
-# CHARACTER -----------------------------------------------------------------------
+        pass
 
-def create_character(userId, first, last):
-    user = database.get_user_by_id(userId)
-    for characterId in user["characters"]:
-        existing = database.get_character_by_id(characterId)
-        if first == existing['first']:
-            return f"You already have a character named \"{first}\"."
-    character, id = database.create_character(userId, first, last)
-    user["characters"].append(id)
-    user["activeCharacter"] = id
-    database.update_user(userId, {**user})
+    elif command == 'list_characters':
+        return list_characters(ctx)
+
+
+def register_server(ctx, ruleset):
+    if ctx.author.id != ctx.guild.owner_id:
+        return False, "Only the server owner can register the server!"
+
+    existing = database.get_game_by_id(ctx.guild.id)
+    if not existing is None:
+        return False, "Sorry! Only one game is allowed per server."
+
+    game = database.create_game(ctx.guild.id, ruleset)
+
+    return True, "Server registered successfully."
+
+
+def change_directory(ctx, path):
+    user = database.get_user_by_id(ctx.author.id)
+    cwd = user['currentWorkingDirectory']
+
+    directory = buildDirectory(ctx)
+    _cwd, directory, message = utils.navigateDict(directory, cwd, path)
+
+    if _cwd != cwd:
+        user['currentWorkingDirectory'] = _cwd
+        database.update_user(ctx.author.id, {'currentWorkingDirectory': _cwd})
+    
+    return directory, _cwd
+
+
+def list_directory(ctx):
+    user = database.get_user_by_id(ctx.author.id)
+    cwd = user['currentWorkingDirectory']
+    directory = buildDirectory(ctx)
+
+    _cwd, directory, message = utils.navigateDict(directory, cwd, "")
+    
+    return directory, _cwd
+
+
+def make_directory(ctx, directory_name):
+    user = database.get_user_by_id(ctx.author.id)
+    cwd = user['currentWorkingDirectory']
+
+    character = database.get_character_by_id(ctx.author.id)
+    ruleset = database.get_game_by_id(ctx.guild.id)["ruleset"]
+
+    directory = {"ruleset": {**ruleset}, **character}
+    
+    _cwd, _directory, message = utils.navigateDict(directory, cwd, "")
+
+    path = _cwd.split('/')
+    cwd = "/".join(path.remove)
+    if path[0] == 'ruleset':
+        if not adminAccess(ctx):
+            return "only admins are allowed to make changes to the ruleset"
+        else:
+            ruleset_directory = utils.navigateDict(ruleset)
+    elif path[0] == 'character':
+        character_directory = utils.navigateDict(character)
+    database.update_game(ctx.guild.id, {"ruleset": ruleset})
+    
+
+def create_character(ctx, first, last):
+    existing = database.get_character_by_name_and_game(ctx.guild.id, first)
+    if not existing is None: 
+        return f"A character already exists on this server with the first name \"{first}\"."
+
+    character, cid = database.create_character(ctx.author.id, ctx.guild.id, first, last)
+    user = database.get_user_by_id(ctx.author.id)
+    user["characters"].append(cid)
+    user["activeCharacter"] = cid
+    database.update_user(ctx.author.id, {**user})
     return f"character \"{first} {last}\" created successfully and set active."
 
 
-def select_character(userId, first):
-    user = database.get_user_by_id(userId)
-    character = database.get_character_by_name_and_user(userId, first)
-    if character is None:
-        return f"You have no character with name \"{first}\""
-    user['activeCharacter'] = character['id']
-    database.update_user(userId, {**user})
-    return f"set character \"{character['first']} {character['last']}\" as active."
-
-
-def list_characters(userId):
-    user = database.get_user_by_id(userId)
-    if len(user['characters']) == 0:
-        return "No characters here! :'("
+def list_characters(ctx):
     response = ""
-    for characterId in user["characters"]:
-        character = database.get_character_by_id(characterId)
-        response += f"{character['first']} {character['last']}\n"
-    return response
-    
-
-def delete_character(userId, first):
-    post = ""
-    user = database.get_user_by_id(userId)
-    character = database.get_character_by_name_and_user(userId, first)
-    if character is None:
-        return f"You have no character with name \"{first}\""
-    cid = character['id']
-    database.delete_character(cid)
-    user['characters'].remove(cid)
-    if user['activeCharacter'] == cid:
-        user['activeCharacter'] = ""
-        post = "\nActive character is not set. \nUse \"!register\" to create a new character or \"!character\" to select an existing one."
-    database.update_user(userId, {**user})
-    return f"Deleted character \"{character['first']} {character['last']}\". " + post
-# DICE ----------------------------------------------------------------------------
-
-def character_roll(characterId, diceString):
-    diceString = diceString.strip().lower()
-    character = database.get_character_by_id(characterId)
-    nameSpace = character['rolls']
-    result = dice.processString(diceString, nameSpace)
-    response = f"{character['first']} rolled {result}" if diceString not in nameSpace.keys() else f"{character['first']} rolled {diceString}: {result}"
-    return response
-
-
-def character_save_roll(characterId, key, diceString):
-    diceString = diceString.strip().lower()
-    key = key.strip().lower()
-    character = database.get_character_by_id(characterId)
-    character['rolls'][key] = diceString
-    database.update_character(characterId, changedValues={'rolls': character['rolls']})
-    return f"saved '{key}' successfully"
-
-
-def character_delete_roll(characterId, key):
-    key = key.strip().lower()
-    character = database.get_character_by_id(characterId)
-    try:
-        del character['rolls'][key]
-        database.update_character(characterId, changedValues={'rolls': character['rolls']})
-    except KeyError as e:
-        return f"Delete failed. No saved roll called {e}"
-    return f"deleted '{key}' successfully"
-
-
-def character_list_rolls(characterId):
-    character = database.get_character_by_id(characterId)
-    nameSpace = character['rolls']
-    keys = [*nameSpace]
-    keys.sort()
-
-    response = f"{character['first']}'s dice\n" + ''.ljust(40, '=') + '\n'
-    for key in keys:
-        response += f"{key}:".ljust(25, ' ') + nameSpace[key] + "\n"
-    return response
-
-
-# INVENTORY ----------------------------------------------------------------------------
-
-def character_list_inventory(characterId):
-    character = database.get_character_by_id(characterId)
-    itemList = []
-    for key in character['inventory'].keys():
-        itemList.append(character['inventory'][key])
-    return build_inventory_string(itemList, includeTotal=True)
-
-
-def admin_give_item(recipientName, itemName, quantity):
-    # get recipientId
-    recipient = database.get_character_by_name(recipientName)
-    if recipient == None:
-        return f"No character named '{recipientName}'"
-    # get itemId
-    results = database.search_items(itemName)
-    if len(results) > 1:
-        response = f"no matches for '{itemName}'. Did you mean one of these?"
-        for result in results:
-            response += f"- {result.name}"
-        return response
-    elif len(results) == 0:
-        return f"No items matched '{itemName}'"
+    characters = database.search_character_by_user_and_game(ctx.author.id, ctx.guild.id)
+    if len(characters) == 0:
+        return "No characters found."
     else:
-        newQuantity, numberRemoved = database.update_character_inventory(recipient['id'], results[0].id, quantity)
-        return f"{recipientName} recieved {quantity} {itemName}('s)"
-
-
-def character_drop_item(characterId, itemName, quantity):
-    # get giver
-    giver = database.get_character_by_id(characterId)
-
-    # get Item Id
-    results = database.search_items(itemName)
-    if len(results) != 1:
-        return f"No item named '{itemName}'"
-    itemId = results[0].id
-
-    newQuantity, numberRemoved = database.update_character_inventory(characterId, itemId, -1 * quantity)
-    return f"{giver['first']} dropped {numberRemoved} {itemName}('s). {newQuantity} remaining."
-
-
-def character_give_item(characterId, recipientName, itemName, quantity):
-    # get giver
-    giver = database.get_character_by_id(characterId)
-
-    # get recipientId
-    recipient = database.get_character_by_name(recipientName)
-    if recipient == None:
-        return f"No character named '{recipientName}'"
-
-    # get Item Id
-    results = database.search_items(itemName)
-    if len(results) != 1:
-        return f"No item named '{itemName}'"
-    itemId = results[0].id
-    
-    # perform transaction
-    newQuantity, numberRemoved = database.update_character_inventory(characterId, itemId, -1 * quantity)
-    if numberRemoved == 0:
-        return f"You do not have any {itemName}'s in your inventory"
-    database.update_character_inventory(recipient['id'], itemId, numberRemoved)
-
-    response = f"{giver['first']} gave {recipientName} {numberRemoved} {itemName}('s)"
-    if numberRemoved != quantity:
-        response = f"You do not have {quantity} {itemName}('s) in your inventory.\n" + response
+        for character in characters:
+            response += f"\n - {character['first']} {character['last']}"
     return response
 
 
-def build_inventory_string(itemList, fill=' ', includeTotal=False):
-    totalWeight = 0
-    itemList.sort(key=name_sort)
-    response = 'NAME'.ljust(35) +'QUANTITY'.ljust(10) + 'COST'.ljust(10) + 'WEIGHT\n'
-    response += ''.ljust(60, '=') + '\n'
-    for item in itemList:
-        weight = float(item['weight']) * item['quantity']
-        totalWeight += weight
-        response += f"{item['name']}".ljust(35, fill) + f"x{item['quantity']}".ljust(10, fill) + item['cost'].ljust(10, fill) + str(weight) + '\n'
+def buildDirectory(ctx):
+    user = database.get_user_by_id(ctx.author.id)
+    cid = user['activeCharacter']
+    cwd = user['currentWorkingDirectory']
 
-    if includeTotal:
-        response += ''.ljust(60, '=') + '\n'
-        response += 'Total:'.ljust(55, fill) + f"{totalWeight}"
-    return response
+    character = database.get_character_by_id(cid)
+    ruleset = database.get_game_by_id(ctx.guild.id)["ruleset"]
+    directory = {"ruleset": {**ruleset}, **character}
+    return directory

@@ -1,5 +1,7 @@
 {
     "id": "",
     "activeCharacter": "",
-    "characters": []
+    "betterActiveCharacterSchema": {"groupid": "characterId"},
+    "characters": [],
+    "currentWorkingDirectory": ""
 }

@@ -28,7 +28,7 @@ class CommandCog(commands.Cog):
     @commands.command()
     async def deleteCharacter(self, ctx, first):
         response = handler.handler(ctx, 'delete_character', first.lower())
-        await ctx.send(f"```{response}```", delete_after=15.0)
+        await ctx.send(f"```{response}```", delete_after=25.0)
         await ctx.message.delete()
 
 def setup(bot):

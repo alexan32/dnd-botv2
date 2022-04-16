@@ -1,11 +1,7 @@
 {
     "first": "",
     "last": "",
-    "currency": 0,
-    "rolls": {},
-    "inventory": [],
-    "counters": {},
     "id": "",
-    "userId": "",
-    "groupId": ""
+    "discordId": "",
+    "guildId": ""
 }

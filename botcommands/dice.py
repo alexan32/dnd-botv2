@@ -9,7 +9,7 @@ class CommandCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-    @commands.command()
+    @commands.command(aliases=['dice'])
     async def roll(self, ctx, *args):
         if len(args) == 0:
             await ctx.send(f"```Missing required argument. See help for more details.```", delete_after=15.0)
@@ -24,8 +24,8 @@ class CommandCog(commands.Cog):
         await ctx.message.delete()
 
 
-    @commands.command()
-    async def save(self, ctx, *args):
+    @commands.command(aliases=['createRoll', 'saveDice', 'createDice'])
+    async def saveRoll(self, ctx, *args):
         if len(args) == 0:
             await ctx.send(f"```Missing required argument. See help for more details.```", delete_after=15.0)
             return
@@ -39,13 +39,13 @@ class CommandCog(commands.Cog):
             await ctx.send(f"```Invalid save string. Expected something like 'acrobatics = 1d20 + dex' ```", delete_after=15.0)
             await deleteAfter(ctx, 15)
             
-        response = handler.handler(ctx, 'save', *newArgs)
+        response = handler.handler(ctx, 'saveRoll', *newArgs)
         await ctx.send(f"```{response}```", delete_after=15.0)
         await ctx.message.delete()
 
 
-    @commands.command()
-    async def erase(self, ctx, *args):
+    @commands.command(aliases=['eraseRoll', 'eraseDice', 'deleteDice'])
+    async def deleteRoll(self, ctx, *args):
         if len(args) == 0:
             await ctx.send(f"```Missing required argument. See help for more details.```", delete_after=15.0)
             return
@@ -53,14 +53,14 @@ class CommandCog(commands.Cog):
             key = args[0]
         else:
             key = ' '.join(args)
-        response = handler.handler(ctx, 'erase', key)
+        response = handler.handler(ctx, 'deleteRoll', key)
         await ctx.send(f"```{response}```", delete_after=15.0)
         await ctx.message.delete()
 
 
-    @commands.command(aliases=['rolls'])
-    async def list(self, ctx, *args):
-        response = handler.handler(ctx, 'list')
+    @commands.command(aliases=['rolls', 'listDice'])
+    async def listRolls(self, ctx, *args):
+        response = handler.handler(ctx, 'listRolls')
         await ctx.send(f"```{response}```", delete_after=60.0)
         await ctx.message.delete()
 

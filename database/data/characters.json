@@ -1,1 +1,41 @@
-{"_default": {}}
+{
+    "_default": {
+        "1": {
+            "first": "nix",
+            "last": "cantor",
+            "id": "29722cd3-98e2-471c-9331-ecc366acbb92",
+            "discordId": 239517576781234177,
+            "guildId": 803625130587979836,
+            "character": {
+                "rolls": {
+                    "str": "0",
+                    "dex": "0",
+                    "con": "0",
+                    "int": "0",
+                    "wis": "0",
+                    "cha": "0",
+                    "prof": "2",
+                    "acrobatics": "1d20 + dex + get(player/bonus/acrobatics, 0)",
+                    "animal handling": "1d20 + wis + get(player/bonus/animalhandling, 0)",
+                    "arcana": "1d20 + int + get(player/bonus/arcana, 0)",
+                    "athletics": "1d20 + str + get(player/bonus/athletics, 0)",
+                    "deception": "1d20 + cha + get(player/bonus/deception, 0)",
+                    "history": "1d20 + int + get(player/bonus/history, 0)",
+                    "insight": "1d20 + wis + get(player/bonus/insight, 0)",
+                    "intimidation": "1d20 + cha + get(player/bonus/intimidation, 0)",
+                    "investigation": "1d20 + int + get(player/bonus/investigation, 0)",
+                    "medicine": "1d20 + wis + get(player/bonus/medicine, 0)",
+                    "nature": "1d20 + int + get(player/bonus/nature, 0)",
+                    "perception": "1d20 + wis + get(player/bonus/perception, 0)",
+                    "performance": "1d20 + cha + get(player/bonus/performance, 0)",
+                    "persuasion": "1d20 + cha + get(player/bonus/persuasion, 0)",
+                    "religion": "1d20 + int + get(player/bonus/religion, 0)",
+                    "sleight of hand": "1d20 + dex + get(player/bonus/sleightofhand, 0)",
+                    "stealth": "1d20 + dex + get(player/bonus/stealth, 0)",
+                    "survival": "1d20 + wis + get(player/bonus/survival, 0)"
+                },
+                "bonus": {}
+            }
+        }
+    }
+}

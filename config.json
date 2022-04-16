@@ -1,5 +1,7 @@
 {
     "discord_token": "ODI2NDkwOTQyNDY2ODE4MDY4.YGNPrA.N3Zs4WMsQpzWaR7H31qegZOvffg",
     "plugins": [],
-    "root_admins": [239517576781234177]
+    "root_admins": [239517576781234177],
+    "playerRoles": ["players"],
+    "adminRoles": ["gm"]
 }

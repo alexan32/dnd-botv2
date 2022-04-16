@@ -1,1 +1,16 @@
-{"_default": {"1": {"id": 239517576781234177, "activeCharacter": "", "characters": []}}}
+{
+    "_default": {
+        "1": {
+            "id": 239517576781234177,
+            "activeCharacter": "29722cd3-98e2-471c-9331-ecc366acbb92",
+            "betterActiveCharacterSchema": {
+                "groupid": "characterId"
+            },
+            "characters": [
+                "665514a5-488f-4dae-a163-8e298d970120",
+                "29722cd3-98e2-471c-9331-ecc366acbb92"
+            ],
+            "currentWorkingDirectory": "character"
+        }
+    }
+}
