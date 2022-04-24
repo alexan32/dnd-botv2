@@ -35,6 +35,7 @@ class CommandCog(commands.Cog):
         f.close()
         f = open(fileName, 'r')
         await ctx.send(file=File(f), delete_after=60.0)
+        await ctx.message.delete()
         f.close()
 
 
