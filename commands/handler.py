@@ -22,6 +22,10 @@ def handler(ctx, command, *args, **kwargs):
 
     if command == 'create_character':
         return create_character(ctx, args[0], args[1])
+    elif command == 'get_character':
+        return get_character(ctx)
+    elif command == 'put_character':
+        return put_character(ctx, args[0])
     elif command == 'save_dice':
         return save_dice(ctx, args[0], args[1])
     elif command == 'roll_dice':
@@ -48,6 +52,26 @@ def create_character(ctx, first, last):
         return f"Character \"{first} {last}\" created successfully."
     return f"Failed to create character."
 
+
+def get_character(ctx):
+    return database.get_user_character(ctx.author.id, ctx.guild.id)
+
+def put_character(ctx, content):
+    content["discordId"] = ctx.author.id
+    content["guildId"] = ctx.guild.id
+    try:
+        assert "rolls" in content
+        assert "first" in content
+        assert "last" in content
+        assert "counters" in content
+        assert "articles" in content
+    except:
+        return "Character failed to upload. Invalid or missing data."
+    try:
+        database.upsert_character(ctx.author.id, ctx.guild.id, content)
+    except:
+        return "Character failed to upload. Database error."
+    return "Character uploaded successfully."
 
 def delete_dice(ctx, saveName):
     character = database.get_user_character(ctx.author.id, ctx.guild.id)
