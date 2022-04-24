@@ -25,6 +25,8 @@ COMMANDS:
 - !counter
 - !counters
 - !create_character
+- !upload_character
+- !download_character
 
 type "!help <command>" to see more details on a specific command.
 """
@@ -125,6 +127,27 @@ CREATE CHARACTER
 Use this command to create your character on this discord server. You cannot have more than one character on a server. You cannot access the same character data on another server.
 
 WARNING! If you already have an existing character on this server, using this command will replace the existing character data with a new profile!
+"""
+
+    elif args[0] == "upload_character":
+        response = """
+UPLOAD CHARACTER
+
+    !upload_character
+
+Use this command to upload character data from a .json file. You must attach the file before you send the command.
+
+"""
+
+    elif args[0] == "download_character":
+        response = """
+
+DOWNLOAD CHARACTER
+
+    !download_character
+
+Use this command to download your character info as a .json file.
+
 """
 
     elif args[0] == "counter":
