@@ -16,20 +16,17 @@ class CommandCog(commands.Cog):
         self.bot = bot
 
     @commands.command()
-    async def article(self, ctx, *args):
-        _type, output = parseInput(args)
-        if _type == 'get':
-            print('get')
-            response = handler.handler(ctx, 'get_article', output)
-        elif _type == 'set':
-            print('set')
-            response = handler.handler(ctx, 'set_article', output[0], output[1])
-        else:
-            print('err')
-            response = output
-        await ctx.send(f"```{response}```")
+    async def cast(self, ctx, *args):
+        _input = "".join(args)
+        print(_input)
+
+
+        # response = handler.handler(ctx, "cast")
+
+        await ctx.send(f"```yo```", delete_after=5.0)
         await ctx.message.delete()
 
+        
 
 async def setup(bot):
     bot.add_cog(CommandCog(bot))

@@ -64,5 +64,5 @@ class CommandCog(commands.Cog):
         await ctx.message.delete()
 
 
-def setup(bot):
+async def setup(bot):
     bot.add_cog(CommandCog(bot))

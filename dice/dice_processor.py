@@ -179,4 +179,5 @@ if __name__ == '__main__':
     }
 
     processor = DiceProcessor(funcs)
-    result = processor.processString("1d20 - hlkj", nameSpace)
+    result = processor.processString("1d20 + wis", nameSpace)
+    print(result) 

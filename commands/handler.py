@@ -182,3 +182,7 @@ def search_counters(ctx, searchString):
         return f"No dice rolls matched with \"{searchString}\""
     pages = utils.paginateDict(temp)
     return pages[0]
+
+
+def cast_spell(ctx, spellName, spellSlot):
+    pass

@@ -2,6 +2,7 @@ import json
 import os
 import commands.handler
 from commands.utils import deleteAfter
+import discord
 from discord.ext import commands
 
 
@@ -9,13 +10,16 @@ script_dir = os.path.dirname(__file__)
 with open(os.path.join(script_dir, "config.json")) as f:
     config = json.load(f)
 
-
-bot = commands.Bot(command_prefix="!")
+intents = discord.Intents.default()
+intents.typing = False
+intents.presences = False
+intents.message_content = True
+bot = commands.Bot(command_prefix="!", intents=intents)
 bot.remove_command("help")
 bot.load_extension("commands.character")
 bot.load_extension("commands.roll")
 bot.load_extension("commands.counter")
-
+bot.load_extension("commands.spells")
 
 standardHelp = """
 COMMANDS:

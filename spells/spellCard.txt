@@ -1,0 +1,10 @@
+{spellName}
+{school} {level}
+Casting Time: {castingTime} {ritual}
+Range: {range}
+Target: {target}
+Components: {components} {materials}
+Duration: {duration} {concentration}
+
+    {description}
+{atHigherLevels}
