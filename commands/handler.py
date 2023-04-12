@@ -1,8 +1,10 @@
 import database.database as database
 import commands.utils as utils
+import spells.spells as spells
 import time
 import json
 import os
+import re
 
 from pprint import pprint
 
@@ -44,6 +46,8 @@ def handler(ctx, command, *args, **kwargs):
         return list_counters(ctx, args[0])
     elif command == 'search_counters':
         return search_counters(ctx, args[0])
+    elif command == 'cast':
+        return cast_spell(ctx, *args)
 
 
 def create_character(ctx, first, last):
@@ -89,7 +93,7 @@ def save_dice(ctx, key, value):
         value = x.join(value.split(x))
         value = value.replace(x, f" {x} ")
     character = database.get_user_character(ctx.author.id, ctx.guild.id)
-    print(character)
+    # print(character)
     character["rolls"][key] = value
     database.upsert_character(ctx.guild.id, ctx.author.id, character)
     return f"roll \"{key}\" set to \"{value}\""
@@ -183,6 +187,40 @@ def search_counters(ctx, searchString):
     pages = utils.paginateDict(temp)
     return pages[0]
 
+# def castSpell(spell:dict, slotLevel:int, attackRoll="1d20", spellSave="8", characterLevel="1", rollsLibrary={})
+def cast_spell(ctx, spellName, slotLevel, attackRoll, spellSave, characterLevel):
+    if not spells.spellExists(spellName):
+        return [f"No spell matches for \"{spellName}\""]
+    
+    character = database.get_user_character(ctx.author.id, ctx.guild.id)
+    rolls = character['rolls']
+    spell = spells.getSpell(spellName)
+    
+    if not slotLevel:
+        slotLevel = int(spell["level"])
 
-def cast_spell(ctx, spellName, spellSlot):
-    pass
+    if not attackRoll:
+        if "spellattack" in rolls:
+            attackRoll = rolls["spellattack"]
+        else:
+            attackRoll="1d20"
+    elif attackRoll in rolls:
+        attackRoll = rolls[attackRoll]
+
+    if not spellSave:
+        if "spellsave"in rolls:
+            spellSave = rolls["spellsave"]
+        else:
+            spellSave = "8"
+    elif spellSave in rolls:
+        spellSave = rolls["spellsave"]
+
+    if not characterLevel:
+        if "level" in rolls:
+            characterLevel = rolls["level"]
+        else:
+            characterLevel = "1"
+    elif characterLevel in rolls:
+        characterLevel = rolls[characterLevel]
+
+    return spells.castSpell(spell, slotLevel, attackRoll, spellSave, characterLevel, rolls)

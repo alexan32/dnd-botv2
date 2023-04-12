@@ -1,10 +1,10 @@
 # commands relating to bot configuration and admin tasks
-from commands.utils import deleteAfter, parseInput
+from commands.utils import deleteAfter, parseInput, cleanInput
 import os
 import json
 from discord.ext import commands
 import commands.handler as handler
-
+import re
 
 script_dir = os.path.dirname(__file__)
 with open(os.path.join(script_dir, "../config.json")) as f:
@@ -17,13 +17,45 @@ class SpellCog(commands.Cog):
 
     @commands.command()
     async def cast(self, ctx, *args):
-        _input = "".join(args)
+        _input = cleanInput("".join(args))
         print(_input)
+        _list = re.split("(slot=)|(attack=)|(castor=)|(save=)", _input)
+        _list = list(filter(lambda x: x !=None, _list))
+        print(_list)
 
+        # castSpell(spell:dict, slotLevel:int, castingInfo:dict, rollsLibrary={}, attackRoll="1d20", spellSave="8", characterLevel="1")
+        spellName = _list[0]
+        slotLevel = None
+        attackRoll= None
+        spellSave = None
+        characterLevel = None
+        
+        x=1
+        while x < len(_list):
+            word = _list[x]
+            if word == "slot=":
+                slotLevel = int(_list[x+1])
+                x+=2
+                continue
+            elif word == "attack=":
+                attackRoll = _list[x+1]
+                x+=2
+                continue
+            elif word == "save=":
+                spellSave = _list[x+1]
+                x+=2
+                continue
+            elif word == "castor=":
+                characterLevel = _list[x+1]
+                x+=2
+                continue
+            else:
+                print(f"Invalid expression for \"cast\" command: {_input} \"{_list[x]}\"")
+                break
 
-        # response = handler.handler(ctx, "cast")
-
-        await ctx.send(f"```yo```", delete_after=5.0)
+        results = handler.handler(ctx, "cast", spellName, slotLevel, attackRoll, spellSave, characterLevel)
+        for result in results:
+            await ctx.send(f"```{result}```", delete_after=120.0)
         await ctx.message.delete()
 
         

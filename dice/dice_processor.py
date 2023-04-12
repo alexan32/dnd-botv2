@@ -90,7 +90,7 @@ class DiceProcessor:
 
 
     def populateVariables(self, tokens, nameSpace={}):
-        print("populate variables")
+        # print("populate variables")
         index = 0
         inFunc = False
         parenDepth = 0

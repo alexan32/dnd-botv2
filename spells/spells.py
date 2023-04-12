@@ -1,25 +1,35 @@
 import re
+import os
 import json
 import dice.dice_processor as dp
 
 processor = dp.DiceProcessor()
-
-with open("spellCard.txt") as f:
-    spellCard = f.read()
-
 cantripScaling = {
     "5": "2",
     "11": "3",
     "17": "4"
 }
 
+script_dir = os.path.dirname(__file__) #<-- absolute dir the script is in
+with open(os.path.join(script_dir, "./spellCard.txt")) as f:
+    spellCard = f.read()
+with open(os.path.join(script_dir, "./5e-spells-dict.json")) as f:
+    spells = json.load(f)
 
 #  spell: spell dictionary from the 5e-spells-dict.json
 #  slotLevel: int representing the level of the spell slot
 #  castingInfo: dict which contains "castorLevel", "spellSave", and "attackRoll" for the spell
-def castSpell(spell:dict, slotLevel:int, castingInfo:dict, rollsLibrary={}, attackRoll="1d20", spellSave="8", characterLevel="1"):
+def castSpell(spell:dict, slotLevel:int, attackRoll="1d20", spellSave="8", characterLevel="1", rollsLibrary={}):
     results = []
-    castingInfo["spellLevel"] = spell["level"]
+    castingInfo = {
+        "attackRoll": attackRoll,
+        "spellSave": spellSave,
+        "castorLevel": characterLevel,
+        "spellLevel": spell['level'],
+        "slot": slotLevel
+    }
+
+    print(json.dumps(castingInfo))
 
     # check spell slot level
     if slotLevel < int(spell["level"]):
@@ -90,7 +100,7 @@ def processEffect(effect: dict, slotLevel: int, castingInfo: dict, rollsLibrary:
         # "diceRoll" : "basicNd8 [bludgeoning]"
         # "basicN" : "4"
         if re.match("basicN(?=d\d)", diceRoll) and "N" in effect:
-            f = eval(f"{effect['n']} - {castingInfo['spellLevel']} + {slotLevel}")
+            f = eval(f"{effect['N']} - {castingInfo['spellLevel']} + {slotLevel}")
             diceRoll = re.sub("basicN(?=d\d)", str(f), diceRoll)
 
         # Adjustment based on spellslot. N(s)
@@ -118,10 +128,15 @@ def processEffect(effect: dict, slotLevel: int, castingInfo: dict, rollsLibrary:
 
     # Spell Save
     if "spellSave" in effect and "spellSave" in castingInfo:
-        results.append(f"Spell Save DC: {castingInfo['spellSave']} {effect['spellSave']}")
+        results.append(f"Spell Save DC: {processor.processString(castingInfo['spellSave'], lib)} {effect['spellSave']}")
 
     return results
 
+def spellExists(spellname:str):
+    return spellname in spells.keys()
+
+def getSpell(spellname:str):
+    return spells[spellname]
 
 if __name__ == "__main__":
 
@@ -136,10 +151,10 @@ if __name__ == "__main__":
         "prof": "4"
     }
 
-    with open("./5e-spells-dict.json") as f:
-        spells = json.load(f)
-
     results = castSpell(spells["armorofagathys"], 5, castingInfo)
     for x in results:
         print(x)
         print()
+
+
+    print(spellExists("scorchingray"))
