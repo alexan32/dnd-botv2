@@ -31,6 +31,7 @@ COMMANDS:
 - !create_character
 - !upload_character
 - !download_character
+- !cast
 
 type "!help <command>" to see more details on a specific command.
 """
@@ -205,6 +206,28 @@ SEARCH COUNTERS
 
     !counters <search string>
 """
+    elif args[0] == "cast":
+        response = """
+CAST
+
+    !cast <spellname>
+    !cast <spellname> slot=<integer> attack=<roll name|dice roll> save=<roll name|dice roll|integer> castor=<integer|roll name>
+
+Use the cast command to show a spell card. Some cards have automated dice rolls that use saved rolls or optional input variables.
+
+If the following rolls are saved for your character, then they will be used automatically when casting:
+    "level" --------> castor
+    "spellsave" ----> save
+    "spellattack"---> attack
+
+Here is an explanation of what each optional argument does:
+
+    - slot: the spell slot at which the spell is cast.
+    - castor: the level of the castor. Some spells increase in power based of of the players level.
+    - attack: the dice roll for the spell attack.
+    - save: the spell save DC for the spll attack.
+    """
+
     else:
         response = f"Command \"{args[0]}\" not found\n" + standardHelp
     
