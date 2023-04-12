@@ -11,7 +11,7 @@ with open(os.path.join(script_dir, "../config.json")) as f:
     config = json.load(f)
 
 
-class CommandCog(commands.Cog):
+class SpellCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
@@ -29,4 +29,4 @@ class CommandCog(commands.Cog):
         
 
 async def setup(bot):
-    bot.add_cog(CommandCog(bot))
+    await bot.add_cog(SpellCog(bot))

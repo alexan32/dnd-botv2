@@ -24,8 +24,8 @@ COMMANDS:
 type "!help <command>" to see more details on a specific command.
 """
 
-class CommandCog(commands.Cog):
-    
+class HelpCog(commands.Cog):
+
     def __init__(self, bot):
         self.bot = bot
 
@@ -182,4 +182,4 @@ class CommandCog(commands.Cog):
         
 
 async def setup(bot):
-    bot.add_cog(CommandCog(bot))
+    await bot.add_cog(HelpCog(bot))

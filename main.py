@@ -16,10 +16,10 @@ intents.presences = False
 intents.message_content = True
 bot = commands.Bot(command_prefix="!", intents=intents)
 bot.remove_command("help")
-bot.load_extension("commands.character")
-bot.load_extension("commands.roll")
-bot.load_extension("commands.counter")
-bot.load_extension("commands.spells")
+# bot.load_extension("commands.character")
+# bot.load_extension("commands.roll")
+# bot.load_extension("commands.counter")
+# bot.load_extension("commands.spells")
 
 standardHelp = """
 COMMANDS:
@@ -38,6 +38,10 @@ type "!help <command>" to see more details on a specific command.
 
 @bot.event
 async def on_ready():
+    await bot.load_extension("commands.character")
+    await bot.load_extension("commands.roll")
+    await bot.load_extension("commands.counter")
+    await bot.load_extension("commands.spells")
     print("bot is ready\n" + ''.ljust(20, '='))
 
 
