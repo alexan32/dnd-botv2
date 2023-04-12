@@ -58,6 +58,11 @@ def parseInput(args:list):
     else:
         return "err", f"Invalid statement \"{sentence}\". Assignment statments must include only one \"=\"."
 
+def cleanInput(input:str):
+    input = input.lower()
+    for x in [" ", "'", "\""]:
+        input = "".join(input.split(x))
+    return input
 
 def paginateDict(dictionary: dict):
     keys = sorted(list(dictionary.keys()))

@@ -5,7 +5,13 @@
     "guildId": "",
     "rolls": {
         "level": "1",
-        "proficiencyBonus": "2",
+        "spellsave": "8 + prof",
+        "spellattack": "1d20 + prof",
+
+        "prof": "2",
+        "proficiency": "prof",
+        "proficiencyBonus": "prof",
+        
         "strengthscore": "10",
         "dexterityscore": "10",
         "constitutionscore": "10",

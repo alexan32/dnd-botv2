@@ -90,7 +90,7 @@ class DiceProcessor:
 
 
     def populateVariables(self, tokens, nameSpace={}):
-        print("populate variables")
+        # print("populate variables")
         index = 0
         inFunc = False
         parenDepth = 0
@@ -179,4 +179,5 @@ if __name__ == '__main__':
     }
 
     processor = DiceProcessor(funcs)
-    result = processor.processString("1d20 - hlkj", nameSpace)
+    result = processor.processString("1d20 + wis", nameSpace)
+    print(result) 
