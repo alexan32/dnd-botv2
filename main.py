@@ -215,15 +215,23 @@ CAST
 
 Use the cast command to show a spell card. Some cards have automated dice rolls that use saved rolls or optional input variables.
 
-If the following rolls are saved for your character, then they will be used automatically when casting:
+If the following rolls are saved for your character, then they will be used automatically when casting unless you add the optional argument:
     "level" --------> castor
     "spellsave" ----> save
     "spellattack"---> attack
 
+Here are a few examples of using the cast command with optional arguments:
+
+    !cast fireball slot=5 save=wizardspellsave
+
+    !cast scorchingray attack=1d20+cha+proficiency slot=5
+
+    !cast acidsplash save=8+prof+cha castor=6
+
 Here is an explanation of what each optional argument does:
 
     - slot: the spell slot at which the spell is cast.
-    - castor: the level of the castor. Some spells increase in power based of of the players level.
+    - castor: the level of the castor. Some spells scale based of of the players level.
     - attack: the dice roll for the spell attack.
     - save: the spell save DC for the spll attack.
     """
