@@ -53,9 +53,16 @@ class SpellCog(commands.Cog):
                 print(f"Invalid expression for \"cast\" command: {_input} \"{_list[x]}\"")
                 break
 
-        results = handler.handler(ctx, "cast", spellName, slotLevel, attackRoll, spellSave, characterLevel)
-        for result in results:
-            await ctx.send(f"```{result}```", delete_after=120.0)
+        try:
+            results = handler.handler(ctx, "cast", spellName, slotLevel, attackRoll, spellSave, characterLevel)
+        except Exception as e:
+            print(e)
+            await ctx.send(f"```Sorry! We messed up. Tell that asshole Seth to check the logs.```")
+            return
+        
+        await ctx.send(f"```{results[0]}```", delete_after=120.0)
+        for result in results[1:]:
+            await ctx.send(f"```{result}```")
         await ctx.message.delete()
 
         
