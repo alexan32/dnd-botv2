@@ -1,5 +1,5 @@
 # commands relating to bot configuration and admin tasks
-from commands.utils import deleteAfter, parseInput, cleanInput
+from commands.utils import deleteAfter, cleanInput, sendMessage
 import os
 import json
 from discord.ext import commands
@@ -60,7 +60,7 @@ class SpellCog(commands.Cog):
             await ctx.send(f"```Sorry! We messed up. Tell that asshole Seth to check the logs.```")
             return
         
-        await ctx.send(f"```{results[0]}```", delete_after=120.0)
+        await sendMessage(ctx, f"{results[0]}", delete_after=120.0)
         for result in results[1:]:
             await ctx.send(f"```{result}```")
         await ctx.message.delete()

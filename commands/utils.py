@@ -14,7 +14,7 @@ async def deleteAfter(ctx, seconds):
 # breaks messages apart if they are too large for the send message api to handle
 async def sendMessage(ctx, formattedResponse, **kwargs):
     if len(formattedResponse) > 2000:
-        words = iter(formattedResponse.split())
+        words = iter(formattedResponse.split(" "))
         lines, current = [], next(words)
         for word in words:
             if len(current) + 1 + len(word) > 1990:
@@ -24,9 +24,9 @@ async def sendMessage(ctx, formattedResponse, **kwargs):
                 current += " " + word
         lines.append(current)
         for line in lines:
-            await ctx.send(line, **kwargs)
+            await ctx.send(f"```{line}```", **kwargs)
     else:
-        await ctx.send(formattedResponse, **kwargs)
+        await ctx.send(f"```{formattedResponse}```", **kwargs)
 
 
 def roll(ctx, input):
