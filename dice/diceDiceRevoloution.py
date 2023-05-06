@@ -4,6 +4,14 @@ from random import randint
 
 # UTIL===============================================================
 
+class MissingVariableException(Exception):
+    def __init__(self, variables):
+        self.message = f"Failed to populate the following variables: {variables}"
+
+class DepthExceededException(Exception):
+    def __init__(self):
+        self.message = "Depth exceeded while performing variable replacement."
+
 def sanitize(expression: str):
     return "".join(expression.split()).lower()
 
@@ -38,15 +46,20 @@ def tokenize(expression):
 
 def replaceVariables(tokens:list, variables:dict):
     i = 0
+    replacements = 0
     missingVars = []
     while i < len(tokens):
         if tokens[i][0] == 'VAR':
             if tokens[i][1] in variables:
+                if replacements > 30:
+                    raise DepthExceededException()
                 newTokens = tokenize(sanitize(variables[tokens[i][1]])) 
                 del tokens[i]
                 tokens[i:i] = [('LPAREN', '(')] + newTokens + [('RPAREN', ')')]
+                replacements += 1
             else:
                 missingVars.append(tokens[i])
+            
         i += 1
     return missingVars, tokens
 
@@ -468,7 +481,7 @@ class DiceProcessor:
         tokens = tokenize(diceString)
         missingVars, tokens = replaceVariables(tokens, variables)
         if len(missingVars) > 0:
-            raise Exception(f"Failed to populate the following variables: {[x[1] for x in missingVars]}")
+            raise MissingVariableException([x[1] for x in missingVars])
 
         # Step 2: parsing
         root = self.generator.generateParseTree(tokens)
