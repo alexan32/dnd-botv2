@@ -16,7 +16,6 @@ class RollCog(commands.Cog):
     def __init__(self, bot):
         self.bot = bot
 
-
     @commands.command()
     async def roll(self, ctx, *args):
         _type, output = parseInput(args)
@@ -26,7 +25,7 @@ class RollCog(commands.Cog):
             await ctx.send(f"```{response}```")
             await ctx.message.delete()
         elif _type == 'set':
-            print('get')
+            print('set')
             response = handler.handler(ctx, 'save_dice', output[0], output[1])
             await ctx.send(f"```{response}```", delete_after=60.0)
             await ctx.message.delete()
@@ -36,6 +35,19 @@ class RollCog(commands.Cog):
             await ctx.send(f"```{response}```")
             await ctx.message.delete()
 
+    @commands.command(aliases=["advantage"])
+    async def adv(self, ctx, *args):
+        _type, output = parseInput(args)
+        response = handler.handler(ctx, 'roll_dice', output, "a")
+        await ctx.send(f"```{response}```")
+        await ctx.message.delete()
+
+    @commands.command(aliases=["disadvantage"])
+    async def dadv(self, ctx, *args):
+        _type, output = parseInput(args)
+        response = handler.handler(ctx, 'roll_dice', output, "d")
+        await ctx.send(f"```{response}```")
+        await ctx.message.delete()
 
     @commands.command()
     async def delete_roll(self, ctx, *args):

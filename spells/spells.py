@@ -1,7 +1,7 @@
 import re
 import os
 import json
-import dice.dice_processor as dp
+import dice.diceDiceRevoloution as dp
 
 processor = dp.DiceProcessor()
 cantripScaling = {
@@ -86,7 +86,7 @@ def processEffect(effect: dict, slotLevel: int, castingInfo: dict, rollsLibrary:
     
     # Attack Roll
     if effect.get("attackRoll") and "attackRoll" in castingInfo:
-        results.append(f"Attack roll: {processor.processString(castingInfo['attackRoll'], lib)}")
+        results.append(f"Attack roll: {processor.processDiceString(castingInfo['attackRoll'], lib)[1]}")
         
     # Dice Roll
     if "diceRoll" in effect:
@@ -124,11 +124,11 @@ def processEffect(effect: dict, slotLevel: int, castingInfo: dict, rollsLibrary:
             diceRoll = re.sub("c(?=d\d)", str(c), diceRoll)
 
         # Save roll result with type added back in
-        results.append("{roll} {type}".format(roll=processor.processString(diceRoll, lib), type= _type))
+        results.append("{roll} {type}".format(roll=processor.processDiceString(diceRoll, lib)[1], type= _type))
 
     # Spell Save
     if "spellSave" in effect and "spellSave" in castingInfo:
-        results.append(f"Spell Save DC: {processor.processString(castingInfo['spellSave'], lib)} {effect['spellSave']}")
+        results.append(f"Spell Save DC: {processor.processDiceString(castingInfo['spellSave'], lib)[0]} {effect['spellSave']}")
 
     return results
 

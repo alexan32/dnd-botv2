@@ -31,6 +31,8 @@ def handler(ctx, command, *args, **kwargs):
     elif command == 'save_dice':
         return save_dice(ctx, args[0], args[1])
     elif command == 'roll_dice':
+        if len(args) > 1:
+            return roll_dice(ctx, args[0], args[1])
         return roll_dice(ctx, args[0])
     elif command == 'list_dice':
         return list_dice(ctx, args[0])
@@ -99,10 +101,10 @@ def save_dice(ctx, key, value):
     return f"roll \"{key}\" set to \"{value}\""
 
 
-def roll_dice(ctx, input):
+def roll_dice(ctx, input, adv=""):
     character = database.get_user_character(ctx.author.id, ctx.guild.id)
     try:
-        response = utils.roll(ctx, input)
+        response = utils.roll(ctx, input, adv)
     except Exception as e:
         print(e)
         return e.message

@@ -1,3 +1,7 @@
+# DESCRIPTION: this script utilizes 5e-spells.csv and the 5eEffects.csv file as well as webscraping 
+# from http://dnd5e.wikidot.com/ to generate json files containing 5e spell info, which is utilized 
+# by the "cast" command.
+
 import json
 import csv
 import requests

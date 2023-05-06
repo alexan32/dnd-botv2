@@ -2,8 +2,9 @@ import asyncio
 from difflib import SequenceMatcher
 from database import database
 import dice.dice_processor as dp
+from dice.diceDiceRevoloution import DiceProcessor
 
-dice = dp.DiceProcessor()
+diceProcessor = DiceProcessor()
 
 # deletes the command message after a number of seconds has passed
 async def deleteAfter(ctx, seconds):
@@ -29,17 +30,12 @@ async def sendMessage(ctx, formattedResponse, **kwargs):
         await ctx.send(f"```{formattedResponse}```", **kwargs)
 
 
-def roll(ctx, input):
+def roll(ctx, input, adv=""):
     character = database.get_user_character(ctx.author.id, ctx.guild.id)
     rolls = character["rolls"]
-
     print(f"input string: {input}")
-    if input in rolls:
-        diceString = rolls[input]
-    else:
-        diceString = input
-    print(f"diceString: {diceString}")
-    return dice.processString(diceString, rolls)
+    resultString = diceProcessor.processDiceString(input, rolls, adv)[1]
+    return resultString
     
 
 def parseInput(args:list):

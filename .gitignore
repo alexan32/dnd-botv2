@@ -1,3 +1,3 @@
 *.pyc
 config.json
-characters.json
+**/data/characters.json

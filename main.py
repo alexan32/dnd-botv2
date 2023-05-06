@@ -26,6 +26,8 @@ COMMANDS:
 - !roll
 - !rolls
 - !delete_roll
+- !adv
+- !dadv
 - !counter
 - !counters
 - !create_character
@@ -84,8 +86,6 @@ To roll a dice string, type the !roll command and follow the command with a dice
 
     !roll 1d20 + 2 * ( 3 / 2 )
 
-This bot uses the d20 python module to perform dice rolls. You can see more details and tips on how the dice notation works on https://pypi.org/project/d20/
-
 SAVING DICE STRINGS
 
 Use this command to save and roll dice. To save a dice roll, follow the command word with an assignment statement. Assignment statements are made using the following format:
@@ -125,6 +125,26 @@ DELETE ROLL
     !delete_roll <save name>
 
 To remove a roll from your saved dice strings, use the delete_roll command. 
+"""
+    elif args[0] == "adv":
+        response = """
+ADVANTAGE
+
+    !adv <dice string | saved dice string>
+    !advantage <dice string | saved dice string>
+
+Use this command to roll dice with advantage. This effective takes any instance of "1d20" inside of the dice expression and transforms it into "2d20kh1" (roll two twenty sided dice and keep the highest roll.)
+    
+"""
+
+    elif args[0] == "dadv":
+        response = """
+DISADVANTAGE
+
+    !dadv <dice string | saved dice string>
+    !disadvantage <dice string | saved dice string>
+
+    Use this command to roll dice with advantage. This effective takes any instance of "1d20" inside of the dice expression and transforms it into "2d20kl1" (roll two twenty sided dice and keep the lowest roll.)
 """
 
     elif args[0] == "create_character":
